@@ -172,7 +172,7 @@ void Window::render() {
     }
 
     sf::CircleShape image;
-    image.setRadius(1);
+    image.setRadius(5);
     image.setFillColor(sf::Color::Red);
     for (auto&& collision : world.collisions) {
         for (auto&& contact : collision.contacts) {

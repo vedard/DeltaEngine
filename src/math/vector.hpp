@@ -18,6 +18,7 @@ class Vector {
     float lenght_squared() const;
     float dot(const Vector &v) const;
     float cross(const Vector &v) const;
+    Vector cross(const float z) const;
     Vector normalize() const;
     Vector normal() const;
 

@@ -9,7 +9,7 @@ SRC := cpp
 HEADER := hpp
 SOURCES := $(shell find $(SRCDIR) -type f -name *.$(SRC))
 OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRC)=.o))
-CFLAGS := -Wfatal-errors -Wall -O2 -std=c++17
+CFLAGS := -Wfatal-errors -Wall -g -std=c++17
 LIB := -pthread `pkg-config sfml-graphics sfml-window sfml-system --libs`
 
 

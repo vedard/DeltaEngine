@@ -34,6 +34,10 @@ float Vector::cross(const Vector& v) const {
     return x * v.y - y * v.x;
 }
 
+Vector Vector::cross(const float z) const{
+    return Vector(-1.f * y * z, x *z);
+}
+
 Vector Vector::operator+(const Vector& v) const {
     return Vector(x + v.x, y + v.y);
 }

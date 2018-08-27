@@ -69,30 +69,31 @@ bool Collision::PolygonPolygonDetection(shapes::Shape* shape_a, shapes::Shape* s
     
     float o1 = referance_vector.dot(referance_edge.point_1);
     this->contacts = math::Edge::GetClippedPoints(incident_edge.point_1, incident_edge.point_2, referance_vector, o1);
-    if (this->contacts.size() < 2)
+    if (this->contacts.size() < 2){
         return true;
+    }
 
     float o2 = referance_vector.dot(referance_edge.point_2);
-    this->contacts  = math::Edge::GetClippedPoints(this->contacts[0], this->contacts[1], referance_vector * -1, -o2);
-    if (this->contacts.size() < 2) 
+    this->contacts  = math::Edge::GetClippedPoints(this->contacts[0], this->contacts[1], referance_vector * -1.f, -o2);
+    if (this->contacts.size() < 2) {
         return true;
+    }
 
-    math::Vector reference_normal = referance_edge.edge.cross(-1.0);
+    math::Vector reference_normal = referance_edge.edge.cross(1.f);
 
     if (flip){
-        reference_normal *= -1;
+        reference_normal *= -1.f;
     }
 
     float max = reference_normal.dot(referance_edge.max);
 
-    if (reference_normal.dot(this->contacts[0]) - max < 0.0) {
-        std::remove(this->contacts.begin(), this->contacts.end(), this->contacts[0]);
+    if (reference_normal.dot(this->contacts[0]) - max < 0.f) {
+        this->contacts.erase(std::remove(this->contacts.begin(), this->contacts.end(), this->contacts[0]));
     }
-    if (reference_normal.dot(this->contacts[1]) - max < 0.0) {
-        std::remove(this->contacts.begin(), this->contacts.end(), this->contacts[1]);
+    if (reference_normal.dot(this->contacts[1]) - max < 0.f) {
+        this->contacts.erase(std::remove(this->contacts.begin(), this->contacts.end(), this->contacts[1]));
     }
 
-    this->contacts.push_back(math::Vector());
     return true;
 }
 
