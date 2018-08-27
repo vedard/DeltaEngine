@@ -1,6 +1,7 @@
 #include <iostream>
+#include "window.hpp"
 
 int main(){
-    std::cout << "Hello" << std::endl;
+    Window().run();
     return 0;
 }

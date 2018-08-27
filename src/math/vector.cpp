@@ -1,12 +1,18 @@
 #include "vector.hpp"
 
 namespace delta {
+namespace math {
 
-Vector::Vector(float x, float y) : x(x), y(y) {}
+Vector::Vector(float x, float y) : x(x), y(y) {
+}
 
-float Vector::lenght() const { return sqrtf(x * x + y * y); }
+float Vector::lenght() const {
+    return sqrtf(x * x + y * y);
+}
 
-float Vector::lenght_squared() const { return x * x + y * y; }
+float Vector::lenght_squared() const {
+    return x * x + y * y;
+}
 
 Vector Vector::normalize() const {
     float l = lenght();
@@ -16,7 +22,17 @@ Vector Vector::normalize() const {
         return *this;
 }
 
-float Vector::dot(const Vector& v) const { return x * v.x + y * v.y; }
+Vector Vector::normal() const {
+    return Vector(-y, x);
+}
+
+float Vector::dot(const Vector& v) const {
+    return x * v.x + y * v.y;
+}
+
+float Vector::cross(const Vector& v) const {
+    return x * v.y - y * v.x;
+}
 
 Vector Vector::operator+(const Vector& v) const {
     return Vector(x + v.x, y + v.y);
@@ -66,9 +82,15 @@ Vector& Vector::operator*=(float value) {
     return *this;
 }
 
+bool Vector::operator==(const Vector& v) const {
+    static const float ELIPSON = 0.0001f;
+    return std::fabs(x - v.x) < ELIPSON && std::fabs(y - v.y) < ELIPSON;
+}
+
 std::ostream& operator<<(std::ostream& os, const Vector& v) {
     os << "(" << v.x << ", " << v.y << ")";
     return os;
 }
 
+}  // namespace math
 }  // namespace delta

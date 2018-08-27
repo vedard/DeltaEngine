@@ -1,0 +1,23 @@
+#pragma once
+
+#include "vector.hpp"
+#include <vector>
+
+namespace delta {
+namespace math {
+
+class Projection {
+   public:
+    float start;
+    float end;
+    Vector farthest_vertex;
+    Vector closest_vertex;
+
+    Projection(float start, float end);
+    Projection(Vector axis, VectorList vertices);
+    bool is_overlapping_with(const Projection& other) const;
+    float calculate_overlap_with(const Projection& other) const;
+};
+
+}  // namespace math
+}  // namespace delta
