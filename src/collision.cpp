@@ -30,35 +30,8 @@ bool Collision::NarrowDetection() {
     }
 }
 
-math::Vector Collision::GetBestEdgeInvolve(shapes::Shape* shape, math::Vector n) const {
-    math::VectorList vertices = shape->get_vertices();
-    math::Vector current_vertex, previous_vertex, next_vertex;
-
-    // Find the farthest vertex in the collision
-    float max = -INFINITY;
-    for(size_t i = 0; i < vertices.size(); i++) {
-        float projection = n.dot(vertices.at(i));
-        if (projection > max) {
-            max = projection;
-            current_vertex = vertices.at(i);
-            previous_vertex = (i == 0) ? vertices.back() : vertices.at(i - 1);
-            next_vertex = (i == vertices.size() - 1) ? vertices.front() : vertices.at(i + 1);
-        }
-    }
-
-    // Find the 2 adjacent edge
-    math::Vector left_edge = current_vertex - next_vertex;
-    math::Vector right_edge = current_vertex - previous_vertex;
-
-    // The best edge is the most perpendicular to the separation normal.
-    if (right_edge.normalize().dot(n) < left_edge.normalize().dot(n)){
-        return right_edge;
-    } else {
-        return left_edge;
-    }
-}
-
 bool Collision::PolygonPolygonDetection(shapes::Shape* shape_a, shapes::Shape* shape_b) {
+    // Separating Axis Theorem (SAT) algorithm to detect polygon collision
     this->penetration = INFINITY;
     this->normal = math::Vector(0, 0);
     math::VectorList axes;
@@ -84,12 +57,39 @@ bool Collision::PolygonPolygonDetection(shapes::Shape* shape_a, shapes::Shape* s
     if ((shape_b->get_centroid() - shape_a->get_centroid()).dot(this->normal) < 0.f) this->normal = this->normal * -1;
 
     // Identify the reference edge and incident edge
-    math::Vector referance_edge = GetBestEdgeInvolve(shape_a, this->normal);
-    math::Vector incident_edge = GetBestEdgeInvolve(shape_b, this->normal * -1);
+    math::Edge referance_edge = math::Edge::GetBestEdgeInvolve(shape_a->get_vertices(), this->normal);
+    math::Edge incident_edge = math::Edge::GetBestEdgeInvolve(shape_b->get_vertices(), this->normal * -1);
     bool flip = false;
-    if (std::abs(referance_edge.dot(this->normal)) > std::abs(incident_edge.dot(this->normal))) {
+    if (std::abs(referance_edge.edge.dot(this->normal)) > std::abs(incident_edge.edge.dot(this->normal))) {
         std::swap(referance_edge, incident_edge);
         flip = true;
+    }
+
+    math::Vector referance_vector = referance_edge.edge.normalize();
+    
+    float o1 = referance_vector.dot(referance_edge.point_1);
+    this->contacts = math::Edge::GetClippedPoints(incident_edge.point_1, incident_edge.point_2, referance_vector, o1);
+    if (this->contacts.size() < 2)
+        return true;
+
+    float o2 = referance_vector.dot(referance_edge.point_2);
+    this->contacts  = math::Edge::GetClippedPoints(this->contacts[0], this->contacts[1], referance_vector * -1, -o2);
+    if (this->contacts.size() < 2) 
+        return true;
+
+    math::Vector reference_normal = referance_edge.edge.cross(-1.0);
+
+    if (flip){
+        reference_normal *= -1;
+    }
+
+    float max = reference_normal.dot(referance_edge.max);
+
+    if (reference_normal.dot(this->contacts[0]) - max < 0.0) {
+        std::remove(this->contacts.begin(), this->contacts.end(), this->contacts[0]);
+    }
+    if (reference_normal.dot(this->contacts[1]) - max < 0.0) {
+        std::remove(this->contacts.begin(), this->contacts.end(), this->contacts[1]);
     }
 
     this->contacts.push_back(math::Vector());
