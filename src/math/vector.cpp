@@ -35,7 +35,7 @@ float Vector::cross(const Vector& v) const {
 }
 
 Vector Vector::cross(const float z) const{
-    return Vector(-1.f * y * z, x *z);
+    return Vector(y * z, x * -z);
 }
 
 Vector Vector::operator+(const Vector& v) const {

@@ -36,7 +36,11 @@ math::VectorList Shape::get_vertices() const {
     math::VectorList _vertices;
 
     for (auto&& vertex : this->points) {
-        _vertices.push_back(vertex + body->position);
+
+        _vertices.push_back(math::Vector(
+            body->position.x + (vertex.x) * std::cos(body->angle) - (vertex.y) * std::sin(body->angle),
+            body->position.y + (vertex.x) * std::sin(body->angle) + (vertex.y) * std::cos(body->angle)
+        ));
     }
     return _vertices;
 }

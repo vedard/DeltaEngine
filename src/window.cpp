@@ -7,7 +7,7 @@ Window::Window() {
     settings.minorVersion = 0;
     create(sf::VideoMode(1366, 768), "Vincent", sf::Style::Default, settings);
     this->setFramerateLimit(60);
-    font.loadFromFile("/home/vincent/prog/Dark-Dungeon/res/Ubuntu-Regular.ttf");
+    font.loadFromFile("./res/Ubuntu-R.ttf");
 
     this->test_big_ball();
 // this->test_cage();
@@ -71,12 +71,13 @@ void Window::test_big_ball() {
     //                                                 radius(generator))), true, false));
     // }
     this->world.bodies.push_back(new delta::Body(
+        delta::math::Vector(675.f,760.f), new delta::shapes::Rectangle(delta::math::Vector(1300, 200)), false, true));
+    this->world.bodies.push_back(new delta::Body(
         delta::math::Vector(770.f, 140.f), new delta::shapes::Rectangle(delta::math::Vector(60, 30)), true, false));
 
     this->world.bodies.back()->velocity = delta::math::Vector(-300, 0);
+    this->world.bodies.back()->angular_velocity = 0.2f;
 
-    this->world.bodies.push_back(new delta::Body(
-        delta::math::Vector(675.f, 700.f), new delta::shapes::Rectangle(delta::math::Vector(1300, 50)), false, true));
 }
 
 void Window::test_pool() {
@@ -172,11 +173,11 @@ void Window::render() {
     }
 
     sf::CircleShape image;
-    image.setRadius(5);
-    image.setFillColor(sf::Color::Red);
+    image.setRadius(2);
+    image.setFillColor(sf::Color::Magenta);
     for (auto&& collision : world.collisions) {
         for (auto&& contact : collision.contacts) {
-            image.setPosition(sf::Vector2f(contact.x, contact.y));
+            image.setPosition(sf::Vector2f(contact.x - 2 , contact.y - 2));
             draw(image);
         }
     }
@@ -198,12 +199,14 @@ void Window::render(delta::shapes::Circle* shape) {
 void Window::render(delta::shapes::Shape* shape) {
     sf::ConvexShape image;
 
-    image.setPointCount(shape->points.size());
-    for (size_t i = 0; i < shape->points.size(); i++) {
-        image.setPoint(i, sf::Vector2f(shape->points[i].x, shape->points[i].y));
+    image.setPointCount(0);
+     for (auto&& vertex : shape->get_vertices()) {
+        std::size_t current_size = image.getPointCount();
+        image.setPointCount(current_size + 1);
+        image.setPoint(current_size, sf::Vector2f(vertex.x, vertex.y));
     }
-    image.setRotation(shape->body->angle * 180 / M_PI);
-    image.setPosition(sf::Vector2f(shape->body->position.x, shape->body->position.y));
+//    image.setRotation(shape->body->angle * 180 / M_PI);
+  //  image.setPosition(sf::Vector2f(shape->body->position.x, shape->body->position.y));
     image.setFillColor(sf::Color::Transparent);
     image.setOutlineColor(sf::Color::Green);
     image.setOutlineThickness(1);

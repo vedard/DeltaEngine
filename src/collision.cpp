@@ -14,7 +14,7 @@ bool Collision::BroadDetection() {
         return false;  // They might be colliding, but they won't move anyway
 
     // Cheap AABB Test
-    if (!A->shape->get_bounding_box().is_colliding_with(B->shape->get_bounding_box())) return false;
+    //if (!A->shape->get_bounding_box().is_colliding_with(B->shape->get_bounding_box())) return false;
 
     coefficient_restitution = std::min(A->coefficient_restitution, B->coefficient_restitution);
     coefficient_static_friction = std::sqrt(A->coefficient_static_friction * B->coefficient_static_friction);
@@ -54,11 +54,15 @@ bool Collision::PolygonPolygonDetection(shapes::Shape* shape_a, shapes::Shape* s
             return false;
         }
     }
-    if ((shape_b->get_centroid() - shape_a->get_centroid()).dot(this->normal) < 0.f) this->normal = this->normal * -1;
+    
+    if ((shape_b->get_centroid() - shape_a->get_centroid()).dot(this->normal) < 0.f) {
+        this->normal = this->normal * -1.f;
+    }
+
+    math::Edge referance_edge = math::Edge::GetBestEdgeInvolve(shape_a->get_vertices(), this->normal);
+    math::Edge incident_edge = math::Edge::GetBestEdgeInvolve(shape_b->get_vertices(), this->normal * -1.f);
 
     // Identify the reference edge and incident edge
-    math::Edge referance_edge = math::Edge::GetBestEdgeInvolve(shape_a->get_vertices(), this->normal);
-    math::Edge incident_edge = math::Edge::GetBestEdgeInvolve(shape_b->get_vertices(), this->normal * -1);
     bool flip = false;
     if (std::abs(referance_edge.edge.dot(this->normal)) > std::abs(incident_edge.edge.dot(this->normal))) {
         std::swap(referance_edge, incident_edge);
@@ -79,11 +83,11 @@ bool Collision::PolygonPolygonDetection(shapes::Shape* shape_a, shapes::Shape* s
         return true;
     }
 
-    math::Vector reference_normal = referance_edge.edge.cross(1.f);
+    math::Vector reference_normal = referance_edge.edge.cross(-1.f);
 
-    if (flip){
-        reference_normal *= -1.f;
-    }
+    // if (flip){
+    //     reference_normal *= -1.f;
+    // }
 
     float max = reference_normal.dot(referance_edge.max);
 
@@ -124,11 +128,18 @@ bool Collision::CircleCircleDetection(shapes::Circle* shape_a, shapes::Circle* s
 }
 
 void Collision::SolveVelocity() {
-    float sum_inverse_mass = (A->inverse_mass + B->inverse_mass);
 
     for (auto&& contact : contacts) {
+
+        math::Vector ra = contact - A->position;
+        math::Vector rb = contact - B->position;
+        float raCrossN = ra.cross(normal); 
+        float rbCrossN = rb.cross(normal);
+    
+        float sum_inverse_mass = (A->inverse_mass + B->inverse_mass) + raCrossN * raCrossN * A->inverse_inertia + rbCrossN * rbCrossN * B->inverse_inertia;
+
         // impact speed
-        math::Vector velocity_difference = B->velocity - A->velocity;
+        math::Vector velocity_difference = B->velocity - A->velocity  + rb.cross(-B->angular_velocity) - ra.cross(-A->angular_velocity);
         float dot = velocity_difference.dot(this->normal);
 
         // Already Moving away
@@ -142,10 +153,12 @@ void Collision::SolveVelocity() {
 
         // Update velocity
         A->velocity -= (v_impulse * A->inverse_mass);
+        A->angular_velocity -= A->inverse_inertia * ra.cross(v_impulse);
         B->velocity += (v_impulse * B->inverse_mass);
+        B->angular_velocity += B->inverse_inertia * rb.cross(v_impulse);
 
         // Friction
-        velocity_difference = B->velocity - A->velocity;
+        velocity_difference = B->velocity - A->velocity + rb.cross(-B->angular_velocity)- ra.cross(-A->angular_velocity);
 
         math::Vector tangent = (velocity_difference - (normal * velocity_difference.dot(normal))).normalize();
         float impulse_tangent = velocity_difference.dot(tangent) * -1 / sum_inverse_mass;
@@ -162,7 +175,9 @@ void Collision::SolveVelocity() {
 
         // Update velocity
         A->velocity -= (v_impulse_tangent * A->inverse_mass);
+        A->angular_velocity -= A->inverse_inertia * ra.cross(v_impulse_tangent);
         B->velocity += (v_impulse_tangent * B->inverse_mass);
+        B->angular_velocity -= B->inverse_inertia * rb.cross(v_impulse_tangent);
     }
 }
 

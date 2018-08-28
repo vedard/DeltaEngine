@@ -23,7 +23,7 @@ class Rectangle : public Shape {
     }
 
     math::Box get_bounding_box() const {
-        return math::Box(body->position - size / 2, body->position + size / 2);
+        return math::Box(body->position - size / 2.f, size);
     };
 };
 }  // namespace shapes
