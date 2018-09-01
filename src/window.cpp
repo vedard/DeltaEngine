@@ -124,12 +124,12 @@ void Window::process_input() {
             if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
                 world.bodies.push_back(new delta::Body(
                     delta::math::Vector(sf::Mouse::getPosition(*this).x, sf::Mouse::getPosition(*this).y),
-                    new delta::shapes::Rectangle(delta::math::Vector(30, 30)), true, false));
+                    new delta::shapes::Rectangle(delta::math::Vector(80, 80)), true, false));
             }
             if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
                 world.bodies.push_back(new delta::Body(
                     delta::math::Vector(sf::Mouse::getPosition(*this).x, sf::Mouse::getPosition(*this).y),
-                    new delta::shapes::Circle(15), true, false));
+                    new delta::shapes::Circle(40), true, false));
             }
             if (sf::Mouse::isButtonPressed(sf::Mouse::Middle)) {
                 world.bodies.push_back(new delta::Body(

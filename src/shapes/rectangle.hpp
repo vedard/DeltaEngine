@@ -21,10 +21,6 @@ class Rectangle : public Shape {
     float get_area() const {
         return size.x * size.y;
     }
-
-    math::Box get_bounding_box() const {
-        return math::Box(body->position - size / 2.f, size);
-    };
 };
 }  // namespace shapes
 }  // namespace delta

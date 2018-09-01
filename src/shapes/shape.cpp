@@ -62,19 +62,19 @@ math::Vector Shape::get_centroid() const {
 }
 
 math::Box Shape::get_bounding_box() const {
-    math::Box bounding_box(math::Vector(INFINITY, INFINITY), math::Vector(-INFINITY, -INFINITY));
+    float minx = INFINITY;
+    float miny = INFINITY;
+    float maxx = -INFINITY;
+    float maxy = -INFINITY;
 
     for (auto&& vertex : get_vertices()) {
-        bounding_box.position.x = std::min(bounding_box.position.x, vertex.x);
-        bounding_box.position.y = std::min(bounding_box.position.y, vertex.y);
-        bounding_box.size.x = std::max(bounding_box.size.x, vertex.x);
-        bounding_box.size.y = std::max(bounding_box.size.y, vertex.y);
+        minx = std::min(minx, vertex.x);
+        miny = std::min(miny, vertex.y);
+        maxx = std::max(maxx, vertex.x);
+        maxy = std::max(maxy, vertex.y);
     }
 
-    bounding_box.size.x = bounding_box.size.x - bounding_box.position.x;
-    bounding_box.size.y = bounding_box.size.y - bounding_box.position.y;
-
-    return bounding_box;
+    return math::Box(math::Vector(minx, miny), math::Vector(maxx - minx, maxy - miny));
 }
 
 }  // namespace shapes
