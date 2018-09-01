@@ -132,9 +132,20 @@ void Window::process_input() {
                     new delta::shapes::Circle(40), true, false));
             }
             if (sf::Mouse::isButtonPressed(sf::Mouse::Middle)) {
-                world.bodies.push_back(new delta::Body(
-                    delta::math::Vector(sf::Mouse::getPosition(*this).x, sf::Mouse::getPosition(*this).y),
-                    new delta::shapes::Triangle(450), true, false));
+                // world.bodies.push_back(new delta::Body(
+                //     delta::math::Vector(sf::Mouse::getPosition(*this).x, sf::Mouse::getPosition(*this).y),
+                //     new delta::shapes::Triangle(450), true, false));
+
+                std::mt19937 generator(std::random_device{}());
+                std::uniform_real_distribution vertex_position(0.f, 100.f);
+                auto *s = new delta::shapes::Shape();
+                s->points.push_back(delta::math::Vector(-vertex_position(generator), -vertex_position(generator)));
+                s->points.push_back(delta::math::Vector(vertex_position(generator), -vertex_position(generator)));
+                s->points.push_back(delta::math::Vector(vertex_position(generator), vertex_position(generator)));
+                s->points.push_back(delta::math::Vector(-vertex_position(generator), vertex_position(generator)));
+                auto *body = new delta::Body(delta::math::Vector(sf::Mouse::getPosition(*this).x, sf::Mouse::getPosition(*this).y),s, true, false);
+                world.bodies.push_back(body);
+                
             }
         }
     }
