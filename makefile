@@ -1,4 +1,6 @@
-all: Delta DeltaTest
+all:
+	@$(MAKE) --no-print-directory -C Delta
+	@$(MAKE) --no-print-directory -C DeltaTest
 
 Delta:
 	@$(MAKE) --no-print-directory -C Delta

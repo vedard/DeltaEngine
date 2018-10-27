@@ -14,7 +14,6 @@ bool Collision::BroadDetection() {
         return false;  // They might be colliding, but they won't move anyway
 
     // Cheap AABB Test
-
     if (!A->shape->get_bounding_box().is_colliding_with(B->shape->get_bounding_box())) return false;
 
     coefficient_restitution = std::min(A->coefficient_restitution, B->coefficient_restitution);
@@ -149,7 +148,7 @@ void Collision::SolveVelocity() {
         // if (this->penetration < 0.1f) this->coefficient_restitution = 0.f;
 
         // Calculate impulse
-        float impulse = (-(1.0f + this->coefficient_restitution) * dot) / sum_inverse_mass / contacts.size();
+        float impulse = (-(1.0f + this->coefficient_restitution) * dot) / sum_inverse_mass / ((float)contacts.size());
         Vector v_impulse = this->normal * impulse;
 
         // Update velocity
@@ -159,13 +158,14 @@ void Collision::SolveVelocity() {
         B->angular_velocity += B->inverse_inertia * rb.cross(v_impulse);
 
         // Friction
-        velocity_difference = B->velocity - A->velocity;
+        // velocity_difference = B->velocity - A->velocity;
+        velocity_difference = B->velocity - A->velocity  + rb.cross(-B->angular_velocity) - ra.cross(-A->angular_velocity);
 
         Vector tangent = (velocity_difference - (normal * velocity_difference.dot(normal))).normalize();
-        float impulse_tangent = velocity_difference.dot(tangent) * -1.f / sum_inverse_mass / contacts.size();
+        float impulse_tangent = velocity_difference.dot(tangent) * -1.f / sum_inverse_mass / ((float)contacts.size());
 
         // Negligible
-        if (std::abs(impulse_tangent) <= 0.0001f) return;
+        if (std::abs(impulse_tangent) <= 0.001f) return;
 
         // Coulumb's law
         Vector v_impulse_tangent;
@@ -176,24 +176,27 @@ void Collision::SolveVelocity() {
 
         // Update velocity
         A->velocity -= (v_impulse_tangent * A->inverse_mass);
-        // A->angular_velocity -= A->inverse_inertia * ra.cross(v_impulse_tangent);
+        A->angular_velocity -= A->inverse_inertia * ra.cross(v_impulse_tangent);
         B->velocity += (v_impulse_tangent * B->inverse_mass);
-        // B->angular_velocity += B->inverse_inertia * rb.cross(v_impulse_tangent);
+        B->angular_velocity += B->inverse_inertia * rb.cross(v_impulse_tangent);
     }
 }
 
 void Collision::SolvePosition() {
-    const float linear_slope = 0.05f;
-    const float max_correction = 90.f / world->position_solving_iteration;
-    const float correction_percent = 0.8f / world->position_solving_iteration;
+    const float linear_slope = 0.0005f;
+    const float max_correction = 0.2f;
+    const float correction_percent = 0.4f;
 
-    float correction = std::clamp((penetration - linear_slope) * correction_percent, 0.0f, max_correction) /
-                       (A->inverse_mass + B->inverse_mass);
-    Vector vcorrection = normal * correction;
+    // for (auto&& contact : contacts) {
+        float correction = std::clamp((penetration - linear_slope) * correction_percent, 0.0f, max_correction) /
+                        (A->inverse_mass + B->inverse_mass);
+        Vector vcorrection = normal * correction;
 
-    // Update position
-    A->position -= vcorrection * A->inverse_mass;
-    B->position += vcorrection * B->inverse_mass;
+        // Update position
+        A->position -= vcorrection * A->inverse_mass;
+        B->position += vcorrection * B->inverse_mass;
+    
+    // }
 }
 
 }
