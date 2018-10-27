@@ -65,13 +65,11 @@ void Window::test_big_ball() {
     //                                                 dt::Rectangle(dt::Vector(radius(generator),
     //                                                 radius(generator))), true, false));
     // }
-    this->world.bodies.push_back(new dt::Body(
-        dt::Vector(675.f,760.f), new dt::Rectangle(dt::Vector(1300, 200)), false, true));
-    this->world.bodies.push_back(new dt::Body(
-        dt::Vector(770.f, 140.f), new dt::Rectangle(dt::Vector(60, 30)), true, false));
+    this->world.bodies.push_back(new dt::Body( dt::Vector(8.f, 7.5f), new dt::Rectangle(dt::Vector(14.f, 0.5f)), false, true));
+    this->world.bodies.push_back(new dt::Body( dt::Vector(15.f, 1.f), new dt::Rectangle(dt::Vector(0.5f, 0.5f)), true, false));
 
-    this->world.bodies.back()->velocity = dt::Vector(-300, 0);
-    this->world.bodies.back()->angular_velocity = 0.2f;
+    this->world.bodies.back()->velocity = dt::Vector(-1.f, 0);
+    this->world.bodies.back()->angular_velocity = 1.f;
 
 }
 
@@ -126,13 +124,13 @@ void Window::process_input() {
         } else if (event.type == sf::Event::MouseButtonPressed) {
             if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
                 world.bodies.push_back(new dt::Body(
-                    dt::Vector(sf::Mouse::getPosition(*this).x, sf::Mouse::getPosition(*this).y),
-                    new dt::Rectangle(dt::Vector(80, 80)), true, false));
+                    dt::Vector(sf::Mouse::getPosition(*this).x / 85.f, sf::Mouse::getPosition(*this).y / 85.f),
+                    new dt::Rectangle(dt::Vector(1.f, 1.f)), true, false));
             }
             if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
                 world.bodies.push_back(new dt::Body(
-                    dt::Vector(sf::Mouse::getPosition(*this).x, sf::Mouse::getPosition(*this).y),
-                    new dt::Circle(40), true, false));
+                    dt::Vector(sf::Mouse::getPosition(*this).x/ 85.f, sf::Mouse::getPosition(*this).y/ 85.f),
+                    new dt::Circle(0.7f), true, false));
             }
             if (sf::Mouse::isButtonPressed(sf::Mouse::Middle)) {
                 // world.bodies.push_back(new dt::Body(
@@ -140,13 +138,13 @@ void Window::process_input() {
                 //     new dt::Triangle(450), true, false));
 
                 std::mt19937 generator(std::random_device{}());
-                std::uniform_real_distribution vertex_position(0.f, 100.f);
+                std::uniform_real_distribution vertex_position(0.f, 1.f);
                 auto *s = new dt::Shape();
                 s->points.push_back(dt::Vector(-vertex_position(generator), -vertex_position(generator)));
                 s->points.push_back(dt::Vector(vertex_position(generator), -vertex_position(generator)));
                 s->points.push_back(dt::Vector(vertex_position(generator), vertex_position(generator)));
                 s->points.push_back(dt::Vector(-vertex_position(generator), vertex_position(generator)));
-                auto *body = new dt::Body(dt::Vector(sf::Mouse::getPosition(*this).x, sf::Mouse::getPosition(*this).y),s, true, false);
+                auto *body = new dt::Body(dt::Vector(sf::Mouse::getPosition(*this).x/ 85.f, sf::Mouse::getPosition(*this).y/ 85.f),s, true, false);
                 world.bodies.push_back(body);
                 
             }
@@ -191,7 +189,7 @@ void Window::render() {
     image.setFillColor(sf::Color::Magenta);
     for (auto&& collision : world.collisions) {
         for (auto&& contact : collision.contacts) {
-            image.setPosition(sf::Vector2f(contact.x - 2 , contact.y - 2));
+            image.setPosition(sf::Vector2f(contact.x*85.f - 2 , contact.y*85.f - 2));
             draw(image);
         }
     }
@@ -202,8 +200,8 @@ void Window::render() {
 
 void Window::render(dt::Circle* shape) {
     sf::CircleShape image;
-    image.setRadius(shape->radius);
-    image.setPosition(sf::Vector2f(shape->body->position.x - shape->radius, shape->body->position.y - shape->radius));
+    image.setRadius(shape->radius*85.f);
+    image.setPosition(sf::Vector2f((shape->body->position.x - shape->radius) *85.f, (shape->body->position.y - shape->radius)*85.f));
     image.setFillColor(sf::Color::Transparent);
     image.setOutlineColor(sf::Color::Cyan);
     image.setOutlineThickness(1);
@@ -218,7 +216,7 @@ void Window::render(dt::Shape* shape) {
      for (auto&& vertex : shape->get_vertices()) {
         std::size_t current_size = image.getPointCount();
         image.setPointCount(current_size + 1);
-        image.setPoint(current_size, sf::Vector2f(vertex.x, vertex.y));
+        image.setPoint(current_size, sf::Vector2f(vertex.x *85.f, vertex.y*85.f));
     }
 
     image.setFillColor(sf::Color::Transparent);
