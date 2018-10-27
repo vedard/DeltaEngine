@@ -16,7 +16,7 @@ class World {
     int velocity_solving_iteration = 30;
     int position_solving_iteration = 1;
     float delta_time = 1.0f / 60.0f;
-    Vector gravity = Vector(0, 1000);
+    Vector gravity = Vector(0.f, 1000.f);
 
     void step();
 };

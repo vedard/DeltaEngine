@@ -31,29 +31,24 @@ void Window::test_cage() {
     this->world.bodies.push_back(
         new dt::Body(dt::Vector(700, 100), new dt::Circle(30.f), true, false));
 
-    // this->world.bodies.push_back(new dt::Body(dt::Vector(725, 400),
-    //                                      new dt::Polygon(dt::Vector(25, 20)), true, false));
-    //                                          this->world.bodies.back()->velocity = dt::Vector(0, -300);
-
     std::mt19937 generator(std::random_device{}());
     std::normal_distribution<float> speed_dis(0, 400);
     std::normal_distribution<> position_x(600, 10);
     std::normal_distribution<> position_y(375, 10);
-    std::normal_distribution<> radius(40.f, 10.f);
-    for (int i = 0; i < 300; i++) {
+    std::normal_distribution<> radius(80.f, 10.f);
+    for (int i = 0; i < 20; i++) {
         dt::Shape* shape = nullptr;
 
-        // if (i % 3 == 0)
             shape = new dt::Rectangle(dt::Vector(radius(generator), radius(generator)));
-        // else if (i % 2 == 0)
-        //     shape = new dt::Triangle(radius(generator));
-        // else
-            // shape = new dt::Circle(radius(generator) / 2);
 
         dt::Body* body =
             new dt::Body(dt::Vector(position_x(generator), position_y(generator)), shape, false, false);
         body->velocity = dt::Vector(speed_dis(generator), speed_dis(generator));
         this->world.bodies.push_back(body);
+    }
+    for(auto&& body : this->world.bodies)
+    {
+       body->coefficient_restitution =1.f; 
     }
 }
 
@@ -81,20 +76,28 @@ void Window::test_big_ball() {
 }
 
 void Window::test_pool() {
-    //     for (int i = 0; i < 5; i++) {
-    //         for (int j = 0 + i; j < 5; j++) {
-    //             dt::Body* c = new dt::Body(new dt::Polygon(dt::Vector(30.f, 30.f)));
-    //             c->is_affected_by_gravity = false;
-    //             c->position = dt::Vector(500.f + j * 40.f - 20.f * i, 100.f + i * 40.f);
-    //             this->world.bodies.push_back(c);
-    //         }
-    //     }
+    this->world.bodies.push_back(new dt::Body(dt::Vector(700, 50), new dt::Rectangle(dt::Vector(1000, 10.f)), false, true));
+    this->world.bodies.push_back(new dt::Body(dt::Vector(440, 10), new dt::Rectangle(dt::Vector(10, 1000.f)), false, true));
+    this->world.bodies.push_back(new dt::Body(dt::Vector(750, 10), new dt::Rectangle(dt::Vector(10, 1000.f)), false, true));
+    for (int i = 0; i < 5; i++) {
+      for (int j = 0 + i; j < 5; j++) {
+        dt::Body *c = new dt::Body(
+            dt::Vector(500.f + j * 41.f - 20.f * i, 100.f + i * 41.f),
+            new dt::Circle(20.f), false, false);
+        this->world.bodies.push_back(c);
+      }
+    }
 
-    //     dt::Body* b = new dt::Body(new dt::Polygon(dt::Vector(30.f, 30.f)));
-    //     b->is_affected_by_gravity = false;
-    //     b->position = dt::Vector(580.f, 700.f);
-    //     b->velocity = dt::Vector(0.f, -1900.f);
-    //     this->world.bodies.push_back(b);
+    dt::Body *b = new dt::Body(dt::Vector(580.f, 900.f), new dt::Circle(20.f), false, false);
+    b->velocity = dt::Vector(0.f, -1900.f);
+
+    
+    for(auto&& body : this->world.bodies)
+    {
+       body->coefficient_restitution =1.f; 
+    }
+    
+    this->world.bodies.push_back(b);
 }
 
 void Window::run() {
@@ -204,6 +207,7 @@ void Window::render(dt::Circle* shape) {
     image.setFillColor(sf::Color::Transparent);
     image.setOutlineColor(sf::Color::Cyan);
     image.setOutlineThickness(1);
+
     draw(image);
 }
 
@@ -216,8 +220,7 @@ void Window::render(dt::Shape* shape) {
         image.setPointCount(current_size + 1);
         image.setPoint(current_size, sf::Vector2f(vertex.x, vertex.y));
     }
-//    image.setRotation(shape->body->angle * 180 / M_PI);
-  //  image.setPosition(sf::Vector2f(shape->body->position.x, shape->body->position.y));
+
     image.setFillColor(sf::Color::Transparent);
     image.setOutlineColor(sf::Color::Green);
     image.setOutlineThickness(1);

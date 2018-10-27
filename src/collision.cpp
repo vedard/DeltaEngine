@@ -145,7 +145,7 @@ void Collision::SolveVelocity() {
         // Already Moving away
         if (dot > 0.0f) return;
 
-        if (this->penetration < 0.1f) this->coefficient_restitution = 0.f;
+        // if (this->penetration < 0.1f) this->coefficient_restitution = 0.f;
 
         // Calculate impulse
         float impulse = (-(1.0f + this->coefficient_restitution) * dot) / sum_inverse_mass / contacts.size();
@@ -161,7 +161,7 @@ void Collision::SolveVelocity() {
         velocity_difference = B->velocity - A->velocity;
 
         Vector tangent = (velocity_difference - (normal * velocity_difference.dot(normal))).normalize();
-        float impulse_tangent = velocity_difference.dot(tangent) * -1 / sum_inverse_mass / contacts.size();
+        float impulse_tangent = velocity_difference.dot(tangent) * -1.f / sum_inverse_mass / contacts.size();
 
         // Negligible
         if (std::abs(impulse_tangent) <= 0.0001f) return;
@@ -177,7 +177,7 @@ void Collision::SolveVelocity() {
         A->velocity -= (v_impulse_tangent * A->inverse_mass);
         // A->angular_velocity -= A->inverse_inertia * ra.cross(v_impulse_tangent);
         B->velocity += (v_impulse_tangent * B->inverse_mass);
-        // B->angular_velocity -= B->inverse_inertia * rb.cross(v_impulse_tangent);
+        // B->angular_velocity += B->inverse_inertia * rb.cross(v_impulse_tangent);
     }
 }
 

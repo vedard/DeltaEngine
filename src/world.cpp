@@ -20,7 +20,7 @@ void World::step() {
     for (Body* body : bodies) {
         if (!body->is_static) {
             body->velocity += body->forces * body->inverse_mass * delta_time;
-            if (body->is_affected_by_gravity) {
+            if (body->is_gravity_affected) {
                 body->velocity += gravity * delta_time;
             }
             body->angular_velocity += body->torque * body->inverse_mass * delta_time;
