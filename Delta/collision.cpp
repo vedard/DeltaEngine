@@ -14,6 +14,7 @@ bool Collision::BroadDetection() {
         return false;  // They might be colliding, but they won't move anyway
 
     // Cheap AABB Test
+
     if (!A->shape->get_bounding_box().is_colliding_with(B->shape->get_bounding_box())) return false;
 
     coefficient_restitution = std::min(A->coefficient_restitution, B->coefficient_restitution);
@@ -184,7 +185,7 @@ void Collision::SolveVelocity() {
 void Collision::SolvePosition() {
     const float linear_slope = 0.05f;
     const float max_correction = 90.f / world->position_solving_iteration;
-    const float correction_percent = 0.4f / world->position_solving_iteration;
+    const float correction_percent = 0.8f / world->position_solving_iteration;
 
     float correction = std::clamp((penetration - linear_slope) * correction_percent, 0.0f, max_correction) /
                        (A->inverse_mass + B->inverse_mass);

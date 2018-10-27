@@ -15,8 +15,8 @@ class Body {
     float angular_velocity = 0;
     float torque = 0;
 
-    float mass = 1000.f;
-    float inverse_mass = 1.f / 1000.f;
+    float mass = 1.f;
+    float inverse_mass = 1.f / 1.f;
     float inertia = 1.f;
     float inverse_inertia = 1.f;
 
@@ -31,7 +31,7 @@ class Body {
     Shape* shape;
 
     Body(Vector position, Shape* shape, bool is_gravity_affected, bool is_static);
-    void calculate_mass();
+    void compute_mass();
 };
 
 }

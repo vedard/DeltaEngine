@@ -5,10 +5,10 @@ namespace dt {
 Body::Body(Vector position, Shape* shape, bool is_gravity_affected, bool is_static)
     : position(position), is_static(is_static), is_gravity_affected(is_gravity_affected), shape(shape) {
     this->shape->body = this;
-    this->calculate_mass();
+    this->compute_mass();
 }
 
-void Body::calculate_mass() {
+void Body::compute_mass() {
     if (this->is_static) {
         this->mass = INFINITY;
         this->inverse_mass = 0.f;

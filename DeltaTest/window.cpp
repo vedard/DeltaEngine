@@ -2,9 +2,9 @@
 
 Window::Window() {
     sf::ContextSettings settings;
-    settings.antialiasingLevel = 8;
+    settings.antialiasingLevel = 0;
     settings.majorVersion = 3;
-    settings.minorVersion = 0;
+    settings.minorVersion = 1;
     create(sf::VideoMode(1366, 768), "Vincent", sf::Style::Default, settings);
     this->setFramerateLimit(60);
     font.loadFromFile("./res/Ubuntu-R.ttf");

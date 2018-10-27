@@ -4,11 +4,7 @@
 #include <iomanip>
 #include <random>
 #include <sstream>
-#include "body.hpp"
-#include "world.hpp"
-#include "shapes/circle.hpp"
-#include "shapes/rectangle.hpp"
-#include "shapes/triangle.hpp"
+#include "Delta/delta.hpp"
 
 class Window : public sf::RenderWindow, public dt::AbstractShapeRenderer {
    public:
