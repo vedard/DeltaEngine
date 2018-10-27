@@ -1,8 +1,8 @@
 #include "shape.hpp"
 #include "../body.hpp"
 
-namespace delta {
-namespace shapes {
+namespace dt {
+
 
 Shape::Shape() {
 }
@@ -20,9 +20,9 @@ float Shape::get_area() const {
     return std::fabs(area / 2.0);
 }
 
-math::VectorList Shape::get_edges() const {
-    math::VectorList _vertices = get_vertices();
-    math::VectorList edges;
+VectorList Shape::get_edges() const {
+    VectorList _vertices = get_vertices();
+    VectorList edges;
 
     for (size_t i = 0; i < _vertices.size() - 1; i++) {
         edges.push_back(_vertices[i + 1] - _vertices[i]);
@@ -32,12 +32,12 @@ math::VectorList Shape::get_edges() const {
 
     return edges;
 }
-math::VectorList Shape::get_vertices() const {
-    math::VectorList _vertices;
+VectorList Shape::get_vertices() const {
+    VectorList _vertices;
 
     for (auto&& vertex : this->points) {
 
-        _vertices.push_back(math::Vector(
+        _vertices.push_back(Vector(
             body->position.x + (vertex.x) * std::cos(body->angle) - (vertex.y) * std::sin(body->angle),
             body->position.y + (vertex.x) * std::sin(body->angle) + (vertex.y) * std::cos(body->angle)
         ));
@@ -49,7 +49,7 @@ void Shape::render(AbstractShapeRenderer* renderer) {
     renderer->render(this);
 }
 
-math::Vector Shape::get_centroid() const {
+Vector Shape::get_centroid() const {
     float x = 0;
     float y = 0;
 
@@ -58,10 +58,10 @@ math::Vector Shape::get_centroid() const {
         y += vertex.y;
     }
 
-    return math::Vector(x / points.size(), y / points.size());
+    return Vector(x / points.size(), y / points.size());
 }
 
-math::Box Shape::get_bounding_box() const {
+Box Shape::get_bounding_box() const {
     float minx = INFINITY;
     float miny = INFINITY;
     float maxx = -INFINITY;
@@ -74,8 +74,8 @@ math::Box Shape::get_bounding_box() const {
         maxy = std::max(maxy, vertex.y);
     }
 
-    return math::Box(math::Vector(minx, miny), math::Vector(maxx - minx, maxy - miny));
+    return Box(Vector(minx, miny), Vector(maxx - minx, maxy - miny));
 }
 
-}  // namespace shapes
-}  // namespace delta
+
+}

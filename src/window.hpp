@@ -10,13 +10,13 @@
 #include "shapes/rectangle.hpp"
 #include "shapes/triangle.hpp"
 
-class Window : public sf::RenderWindow, public delta::shapes::AbstractShapeRenderer {
+class Window : public sf::RenderWindow, public dt::AbstractShapeRenderer {
    public:
     Window();
     void run();
 
    private:
-    delta::World world;
+    dt::World world;
     sf::Clock update_clock;
     sf::Clock fps_clock;
     sf::Font font;
@@ -29,7 +29,7 @@ class Window : public sf::RenderWindow, public delta::shapes::AbstractShapeRende
     void test_big_ball();
     void test_cage();
     void test_pool();
-    void render(delta::shapes::Circle *shape);
-    void render(delta::shapes::Shape *shape);
+    void render(dt::Circle *shape);
+    void render(dt::Shape *shape);
 };
 

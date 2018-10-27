@@ -3,13 +3,13 @@
 #include "math/vector.hpp"
 #include "shapes/shape.hpp"
 
-namespace delta {
+namespace dt {
 
 class Body {
    public:
-    math::Vector position;
-    math::Vector velocity;
-    math::Vector forces;
+    Vector position;
+    Vector velocity;
+    Vector forces;
 
     float angle = 0;
     float angular_velocity = 0;
@@ -28,10 +28,10 @@ class Body {
     bool is_static;
     bool is_affected_by_gravity;
 
-    shapes::Shape* shape;
+    Shape* shape;
 
-    Body(math::Vector position, shapes::Shape* shape, bool is_affected_by_gravity, bool is_static);
+    Body(Vector position, Shape* shape, bool is_affected_by_gravity, bool is_static);
     void calculate_mass();
 };
 
-}  // namespace delta
+}

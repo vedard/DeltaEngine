@@ -1,6 +1,6 @@
 #include "collision.hpp"
 
-namespace delta {
+namespace dt {
 
 Collision::Collision(Body* a, Body* b, World* w) : A(a), B(b), world(w) {
 }
@@ -23,26 +23,26 @@ bool Collision::BroadDetection() {
 }
 
 bool Collision::NarrowDetection() {
-    if (dynamic_cast<shapes::Circle*>(A->shape) && dynamic_cast<shapes::Circle*>(B->shape)) {
-        return CircleCircleDetection(dynamic_cast<shapes::Circle*>(A->shape), dynamic_cast<shapes::Circle*>(B->shape));
+    if (dynamic_cast<Circle*>(A->shape) && dynamic_cast<Circle*>(B->shape)) {
+        return CircleCircleDetection(dynamic_cast<Circle*>(A->shape), dynamic_cast<Circle*>(B->shape));
     } else {
         return PolygonPolygonDetection(A->shape, B->shape);
     }
 }
 
-bool Collision::PolygonPolygonDetection(shapes::Shape* shape_a, shapes::Shape* shape_b) {
+bool Collision::PolygonPolygonDetection(Shape* shape_a, Shape* shape_b) {
     // Separating Axis Theorem (SAT) algorithm to detect polygon collision
     this->penetration = INFINITY;
-    this->normal = math::Vector(0, 0);
-    math::VectorList axes;
+    this->normal = Vector(0, 0);
+    VectorList axes;
 
     for (auto&& edge : shape_a->get_edges()) axes.push_back(edge.normalize().normal());
 
     for (auto&& edge : shape_b->get_edges()) axes.push_back(edge.normalize().normal());
 
     for (auto&& axis : axes) {
-        math::Projection projection_a(axis, shape_a->get_vertices());
-        math::Projection projection_b(axis, shape_b->get_vertices());
+        Projection projection_a(axis, shape_a->get_vertices());
+        Projection projection_b(axis, shape_b->get_vertices());
 
         if (projection_a.is_overlapping_with(projection_b)) {
             float overlap = projection_a.calculate_overlap_with(projection_b);
@@ -59,8 +59,8 @@ bool Collision::PolygonPolygonDetection(shapes::Shape* shape_a, shapes::Shape* s
         this->normal = this->normal * -1.f;
     }
 
-    math::Edge referance_edge = math::Edge::GetBestEdgeInvolve(shape_a->get_vertices(), this->normal);
-    math::Edge incident_edge = math::Edge::GetBestEdgeInvolve(shape_b->get_vertices(), this->normal * -1.f);
+    Edge referance_edge = Edge::GetBestEdgeInvolve(shape_a->get_vertices(), this->normal);
+    Edge incident_edge = Edge::GetBestEdgeInvolve(shape_b->get_vertices(), this->normal * -1.f);
 
     // Identify the reference edge and incident edge
     bool flip = false;
@@ -69,21 +69,21 @@ bool Collision::PolygonPolygonDetection(shapes::Shape* shape_a, shapes::Shape* s
         flip = true;
     }
 
-    math::Vector referance_vector = referance_edge.edge.normalize();
+    Vector referance_vector = referance_edge.edge.normalize();
     
     float o1 = referance_vector.dot(referance_edge.point_1);
-    this->contacts = math::Edge::GetClippedPoints(incident_edge.point_1, incident_edge.point_2, referance_vector, o1);
+    this->contacts = Edge::GetClippedPoints(incident_edge.point_1, incident_edge.point_2, referance_vector, o1);
     if (this->contacts.size() < 2){
         return true;
     }
 
     float o2 = referance_vector.dot(referance_edge.point_2);
-    this->contacts  = math::Edge::GetClippedPoints(this->contacts[0], this->contacts[1], referance_vector * -1.f, -o2);
+    this->contacts  = Edge::GetClippedPoints(this->contacts[0], this->contacts[1], referance_vector * -1.f, -o2);
     if (this->contacts.size() < 2) {
         return true;
     }
 
-    math::Vector reference_normal = referance_edge.edge.cross(-1.f);
+    Vector reference_normal = referance_edge.edge.cross(-1.f);
 
     // if (flip){
     //     reference_normal *= -1.f;
@@ -101,8 +101,8 @@ bool Collision::PolygonPolygonDetection(shapes::Shape* shape_a, shapes::Shape* s
     return true;
 }
 
-bool Collision::CircleCircleDetection(shapes::Circle* shape_a, shapes::Circle* shape_b) {
-    math::Vector v_distance = B->position - A->position;
+bool Collision::CircleCircleDetection(Circle* shape_a, Circle* shape_b) {
+    Vector v_distance = B->position - A->position;
 
     float distance_squared = v_distance.lenght_squared();
     float both_radius = shape_a->radius + shape_b->radius;
@@ -116,7 +116,7 @@ bool Collision::CircleCircleDetection(shapes::Circle* shape_a, shapes::Circle* s
 
     if (distance == 0.0f) {
         this->penetration = shape_a->radius;
-        this->normal = math::Vector(1, 0);
+        this->normal = Vector(1, 0);
         this->contacts.push_back(A->position);
     } else {
         this->penetration = both_radius - distance;
@@ -131,15 +131,15 @@ void Collision::SolveVelocity() {
 
     for (auto&& contact : contacts) {
 
-        math::Vector ra = contact - A->position;
-        math::Vector rb = contact - B->position;
+        Vector ra = contact - A->position;
+        Vector rb = contact - B->position;
         float raCrossN = ra.cross(normal); 
         float rbCrossN = rb.cross(normal);
     
         float sum_inverse_mass = (A->inverse_mass + B->inverse_mass) + raCrossN * raCrossN * A->inverse_inertia + rbCrossN * rbCrossN * B->inverse_inertia;
 
         // impact speed
-        math::Vector velocity_difference = B->velocity - A->velocity  + rb.cross(-B->angular_velocity) - ra.cross(-A->angular_velocity);
+        Vector velocity_difference = B->velocity - A->velocity  + rb.cross(-B->angular_velocity) - ra.cross(-A->angular_velocity);
         float dot = velocity_difference.dot(this->normal);
 
         // Already Moving away
@@ -149,7 +149,7 @@ void Collision::SolveVelocity() {
 
         // Calculate impulse
         float impulse = (-(1.0f + this->coefficient_restitution) * dot) / sum_inverse_mass / contacts.size();
-        math::Vector v_impulse = this->normal * impulse;
+        Vector v_impulse = this->normal * impulse;
 
         // Update velocity
         A->velocity -= (v_impulse * A->inverse_mass);
@@ -160,14 +160,14 @@ void Collision::SolveVelocity() {
         // Friction
         velocity_difference = B->velocity - A->velocity;
 
-        math::Vector tangent = (velocity_difference - (normal * velocity_difference.dot(normal))).normalize();
+        Vector tangent = (velocity_difference - (normal * velocity_difference.dot(normal))).normalize();
         float impulse_tangent = velocity_difference.dot(tangent) * -1 / sum_inverse_mass / contacts.size();
 
         // Negligible
         if (std::abs(impulse_tangent) <= 0.0001f) return;
 
         // Coulumb's law
-        math::Vector v_impulse_tangent;
+        Vector v_impulse_tangent;
         if (std::abs(impulse_tangent) < impulse * coefficient_static_friction)
             v_impulse_tangent = tangent * impulse_tangent;
         else
@@ -188,11 +188,11 @@ void Collision::SolvePosition() {
 
     float correction = std::clamp((penetration - linear_slope) * correction_percent, 0.0f, max_correction) /
                        (A->inverse_mass + B->inverse_mass);
-    math::Vector vcorrection = normal * correction;
+    Vector vcorrection = normal * correction;
 
     // Update position
     A->position -= vcorrection * A->inverse_mass;
     B->position += vcorrection * B->inverse_mass;
 }
 
-}  // namespace delta
+}

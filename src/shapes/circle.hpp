@@ -2,8 +2,8 @@
 
 #include "shape.hpp"
 
-namespace delta {
-namespace shapes {
+namespace dt {
+
 
 class Circle : public Shape {
    public:
@@ -12,7 +12,7 @@ class Circle : public Shape {
     Circle(float radius, int vertex = 15) : radius(radius) {
         float increment = 2.0f * M_PI / vertex;
         for (float angle = 0.0f; angle <= 2.0f * M_PI; angle += increment) {
-            this->points.push_back(math::Vector(radius * std::cos(angle), radius * std::sin(angle)));
+            this->points.push_back(Vector(radius * std::cos(angle), radius * std::sin(angle)));
         }
     }
 
@@ -20,9 +20,9 @@ class Circle : public Shape {
         return M_PI * radius * radius;
     }
 
-    math::Box get_bounding_box() const {
-        return math::Box(math::Vector(body->position.x - radius, body->position.y - radius),
-                         math::Vector(radius * 2, radius * 2));
+    Box get_bounding_box() const {
+        return Box(Vector(body->position.x - radius, body->position.y - radius),
+                         Vector(radius * 2, radius * 2));
     }
 
     void render(AbstractShapeRenderer *renderer){
@@ -30,5 +30,5 @@ class Circle : public Shape {
     }
 };
 
-}  // namespace shapes
-}  // namespace delta
+
+}

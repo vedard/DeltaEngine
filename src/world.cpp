@@ -1,7 +1,7 @@
 #include "world.hpp"
 #include "collision.hpp"
 
-namespace delta {
+namespace dt {
 
 void World::step() {
 
@@ -53,9 +53,9 @@ void World::step() {
 
     // Reset forces
     for (Body* body : bodies) {
-        body->forces = math::Vector(0, 0);
+        body->forces = Vector(0, 0);
         body->torque = 0;
     }
 }
 
-}  // namespace delta
+}

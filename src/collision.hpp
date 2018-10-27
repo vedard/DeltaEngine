@@ -10,7 +10,7 @@
 #include "shapes/shape.hpp"
 #include "world.hpp"
 
-namespace delta {
+namespace dt {
 
 class World;
 
@@ -20,8 +20,8 @@ class Collision {
     Body* B;
     World* world;
 
-    math::Vector normal;
-    math::VectorList contacts;
+    Vector normal;
+    VectorList contacts;
 
     float penetration;
     float coefficient_restitution;
@@ -35,9 +35,9 @@ class Collision {
     void SolvePosition();
 
    private:
-    bool CircleCircleDetection(shapes::Circle* shape_a, shapes::Circle* shape_b);
-    bool PolygonPolygonDetection(shapes::Shape* shape_a, shapes::Shape* shape_b);
+    bool CircleCircleDetection(Circle* shape_a, Circle* shape_b);
+    bool PolygonPolygonDetection(Shape* shape_a, Shape* shape_b);
 
 };
 
-}  // namespace delta
+}

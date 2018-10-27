@@ -15,25 +15,25 @@ Window::Window() {
 }
 
 void Window::test_cage() {
-    this->world.bodies.push_back(new delta::Body(delta::math::Vector(1366.f / 2.f, 5.f / 2.f),
-                                                 new delta::shapes::Rectangle(delta::math::Vector(1366, 5)), false,
+    this->world.bodies.push_back(new dt::Body(dt::Vector(1366.f / 2.f, 5.f / 2.f),
+                                                 new dt::Rectangle(dt::Vector(1366, 5)), false,
                                                  true));
-    this->world.bodies.push_back(new delta::Body(delta::math::Vector(1366.f / 2.f, 768.f - 5.f / 2.f),
-                                                 new delta::shapes::Rectangle(delta::math::Vector(1366, 5)), false,
+    this->world.bodies.push_back(new dt::Body(dt::Vector(1366.f / 2.f, 768.f - 5.f / 2.f),
+                                                 new dt::Rectangle(dt::Vector(1366, 5)), false,
                                                  true));
-    this->world.bodies.push_back(new delta::Body(delta::math::Vector(5.f / 2.f, 768 / 2.f),
-                                                 new delta::shapes::Rectangle(delta::math::Vector(5, 768)), false,
+    this->world.bodies.push_back(new dt::Body(dt::Vector(5.f / 2.f, 768 / 2.f),
+                                                 new dt::Rectangle(dt::Vector(5, 768)), false,
                                                  true));
-    this->world.bodies.push_back(new delta::Body(delta::math::Vector(1366.f - 5.f / 2.f, 768.f / 2.f),
-                                                 new delta::shapes::Rectangle(delta::math::Vector(5, 768)), false,
+    this->world.bodies.push_back(new dt::Body(dt::Vector(1366.f - 5.f / 2.f, 768.f / 2.f),
+                                                 new dt::Rectangle(dt::Vector(5, 768)), false,
                                                  true));
 
     this->world.bodies.push_back(
-        new delta::Body(delta::math::Vector(700, 100), new delta::shapes::Circle(30.f), true, false));
+        new dt::Body(dt::Vector(700, 100), new dt::Circle(30.f), true, false));
 
-    // this->world.bodies.push_back(new delta::Body(delta::math::Vector(725, 400),
-    //                                      new delta::shapes::Polygon(delta::math::Vector(25, 20)), true, false));
-    //                                          this->world.bodies.back()->velocity = delta::math::Vector(0, -300);
+    // this->world.bodies.push_back(new dt::Body(dt::Vector(725, 400),
+    //                                      new dt::Polygon(dt::Vector(25, 20)), true, false));
+    //                                          this->world.bodies.back()->velocity = dt::Vector(0, -300);
 
     std::mt19937 generator(std::random_device{}());
     std::normal_distribution<float> speed_dis(0, 400);
@@ -41,18 +41,18 @@ void Window::test_cage() {
     std::normal_distribution<> position_y(375, 10);
     std::normal_distribution<> radius(40.f, 10.f);
     for (int i = 0; i < 300; i++) {
-        delta::shapes::Shape* shape = nullptr;
+        dt::Shape* shape = nullptr;
 
         // if (i % 3 == 0)
-            shape = new delta::shapes::Rectangle(delta::math::Vector(radius(generator), radius(generator)));
+            shape = new dt::Rectangle(dt::Vector(radius(generator), radius(generator)));
         // else if (i % 2 == 0)
-        //     shape = new delta::shapes::Triangle(radius(generator));
+        //     shape = new dt::Triangle(radius(generator));
         // else
-            // shape = new delta::shapes::Circle(radius(generator) / 2);
+            // shape = new dt::Circle(radius(generator) / 2);
 
-        delta::Body* body =
-            new delta::Body(delta::math::Vector(position_x(generator), position_y(generator)), shape, false, false);
-        body->velocity = delta::math::Vector(speed_dis(generator), speed_dis(generator));
+        dt::Body* body =
+            new dt::Body(dt::Vector(position_x(generator), position_y(generator)), shape, false, false);
+        body->velocity = dt::Vector(speed_dis(generator), speed_dis(generator));
         this->world.bodies.push_back(body);
     }
 }
@@ -64,18 +64,18 @@ void Window::test_big_ball() {
     std::normal_distribution<> radius(35.f, 4.f);
 
     // for (size_t i = 0; i < 25; i++) {
-    //     this->world.bodies.push_back(new delta::Body(delta::math::Vector(position_x(generator),
+    //     this->world.bodies.push_back(new dt::Body(dt::Vector(position_x(generator),
     //     position_y(generator)),
     //                                                 new
-    //                                                 delta::shapes::Rectangle(delta::math::Vector(radius(generator),
+    //                                                 dt::Rectangle(dt::Vector(radius(generator),
     //                                                 radius(generator))), true, false));
     // }
-    this->world.bodies.push_back(new delta::Body(
-        delta::math::Vector(675.f,760.f), new delta::shapes::Rectangle(delta::math::Vector(1300, 200)), false, true));
-    this->world.bodies.push_back(new delta::Body(
-        delta::math::Vector(770.f, 140.f), new delta::shapes::Rectangle(delta::math::Vector(60, 30)), true, false));
+    this->world.bodies.push_back(new dt::Body(
+        dt::Vector(675.f,760.f), new dt::Rectangle(dt::Vector(1300, 200)), false, true));
+    this->world.bodies.push_back(new dt::Body(
+        dt::Vector(770.f, 140.f), new dt::Rectangle(dt::Vector(60, 30)), true, false));
 
-    this->world.bodies.back()->velocity = delta::math::Vector(-300, 0);
+    this->world.bodies.back()->velocity = dt::Vector(-300, 0);
     this->world.bodies.back()->angular_velocity = 0.2f;
 
 }
@@ -83,17 +83,17 @@ void Window::test_big_ball() {
 void Window::test_pool() {
     //     for (int i = 0; i < 5; i++) {
     //         for (int j = 0 + i; j < 5; j++) {
-    //             delta::Body* c = new delta::Body(new delta::shapes::Polygon(delta::math::Vector(30.f, 30.f)));
+    //             dt::Body* c = new dt::Body(new dt::Polygon(dt::Vector(30.f, 30.f)));
     //             c->is_affected_by_gravity = false;
-    //             c->position = delta::math::Vector(500.f + j * 40.f - 20.f * i, 100.f + i * 40.f);
+    //             c->position = dt::Vector(500.f + j * 40.f - 20.f * i, 100.f + i * 40.f);
     //             this->world.bodies.push_back(c);
     //         }
     //     }
 
-    //     delta::Body* b = new delta::Body(new delta::shapes::Polygon(delta::math::Vector(30.f, 30.f)));
+    //     dt::Body* b = new dt::Body(new dt::Polygon(dt::Vector(30.f, 30.f)));
     //     b->is_affected_by_gravity = false;
-    //     b->position = delta::math::Vector(580.f, 700.f);
-    //     b->velocity = delta::math::Vector(0.f, -1900.f);
+    //     b->position = dt::Vector(580.f, 700.f);
+    //     b->velocity = dt::Vector(0.f, -1900.f);
     //     this->world.bodies.push_back(b);
 }
 
@@ -122,28 +122,28 @@ void Window::process_input() {
             sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
         } else if (event.type == sf::Event::MouseButtonPressed) {
             if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-                world.bodies.push_back(new delta::Body(
-                    delta::math::Vector(sf::Mouse::getPosition(*this).x, sf::Mouse::getPosition(*this).y),
-                    new delta::shapes::Rectangle(delta::math::Vector(80, 80)), true, false));
+                world.bodies.push_back(new dt::Body(
+                    dt::Vector(sf::Mouse::getPosition(*this).x, sf::Mouse::getPosition(*this).y),
+                    new dt::Rectangle(dt::Vector(80, 80)), true, false));
             }
             if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
-                world.bodies.push_back(new delta::Body(
-                    delta::math::Vector(sf::Mouse::getPosition(*this).x, sf::Mouse::getPosition(*this).y),
-                    new delta::shapes::Circle(40), true, false));
+                world.bodies.push_back(new dt::Body(
+                    dt::Vector(sf::Mouse::getPosition(*this).x, sf::Mouse::getPosition(*this).y),
+                    new dt::Circle(40), true, false));
             }
             if (sf::Mouse::isButtonPressed(sf::Mouse::Middle)) {
-                // world.bodies.push_back(new delta::Body(
-                //     delta::math::Vector(sf::Mouse::getPosition(*this).x, sf::Mouse::getPosition(*this).y),
-                //     new delta::shapes::Triangle(450), true, false));
+                // world.bodies.push_back(new dt::Body(
+                //     dt::Vector(sf::Mouse::getPosition(*this).x, sf::Mouse::getPosition(*this).y),
+                //     new dt::Triangle(450), true, false));
 
                 std::mt19937 generator(std::random_device{}());
                 std::uniform_real_distribution vertex_position(0.f, 100.f);
-                auto *s = new delta::shapes::Shape();
-                s->points.push_back(delta::math::Vector(-vertex_position(generator), -vertex_position(generator)));
-                s->points.push_back(delta::math::Vector(vertex_position(generator), -vertex_position(generator)));
-                s->points.push_back(delta::math::Vector(vertex_position(generator), vertex_position(generator)));
-                s->points.push_back(delta::math::Vector(-vertex_position(generator), vertex_position(generator)));
-                auto *body = new delta::Body(delta::math::Vector(sf::Mouse::getPosition(*this).x, sf::Mouse::getPosition(*this).y),s, true, false);
+                auto *s = new dt::Shape();
+                s->points.push_back(dt::Vector(-vertex_position(generator), -vertex_position(generator)));
+                s->points.push_back(dt::Vector(vertex_position(generator), -vertex_position(generator)));
+                s->points.push_back(dt::Vector(vertex_position(generator), vertex_position(generator)));
+                s->points.push_back(dt::Vector(-vertex_position(generator), vertex_position(generator)));
+                auto *body = new dt::Body(dt::Vector(sf::Mouse::getPosition(*this).x, sf::Mouse::getPosition(*this).y),s, true, false);
                 world.bodies.push_back(body);
                 
             }
@@ -151,16 +151,16 @@ void Window::process_input() {
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-        world.bodies.back()->forces += delta::math::Vector(0, -100);
+        world.bodies.back()->forces += dt::Vector(0, -100);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-        world.bodies.back()->forces += delta::math::Vector(0, 100);
+        world.bodies.back()->forces += dt::Vector(0, 100);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-        world.bodies.back()->forces += delta::math::Vector(-100, 0);
+        world.bodies.back()->forces += dt::Vector(-100, 0);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-        world.bodies.back()->forces += delta::math::Vector(100, 0);
+        world.bodies.back()->forces += dt::Vector(100, 0);
     }
 }
 
@@ -197,7 +197,7 @@ void Window::render() {
     display();
 }
 
-void Window::render(delta::shapes::Circle* shape) {
+void Window::render(dt::Circle* shape) {
     sf::CircleShape image;
     image.setRadius(shape->radius);
     image.setPosition(sf::Vector2f(shape->body->position.x - shape->radius, shape->body->position.y - shape->radius));
@@ -207,7 +207,7 @@ void Window::render(delta::shapes::Circle* shape) {
     draw(image);
 }
 
-void Window::render(delta::shapes::Shape* shape) {
+void Window::render(dt::Shape* shape) {
     sf::ConvexShape image;
 
     image.setPointCount(0);

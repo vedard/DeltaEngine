@@ -1,7 +1,7 @@
 #pragma once
 
-namespace delta {
-namespace shapes {
+namespace dt {
+
 
 class Circle;
 class Rectangle;
@@ -14,5 +14,5 @@ class AbstractShapeRenderer {
     virtual void render(Shape *shape) = 0;
 };
 
-}  // namespace shapes
-}  // namespace delta
+
+}

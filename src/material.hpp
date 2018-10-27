@@ -1,6 +1,6 @@
 #pragma once
 
-namespace delta {
+namespace dt {
 
 class Material {
     float density = 1.f;
@@ -13,4 +13,4 @@ class Material {
     static Material Plastic();
 };
 
-}  // namespace delta
+}

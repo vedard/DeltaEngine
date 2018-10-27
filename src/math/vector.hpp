@@ -4,8 +4,7 @@
 #include <iostream>
 #include <vector>
 
-namespace delta {
-namespace math {
+namespace dt {
 
 class Vector {
    public:
@@ -38,5 +37,4 @@ class Vector {
 
 typedef std::vector<Vector> VectorList;
 
-}  // namespace math
-}  // namespace delta
+}

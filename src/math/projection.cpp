@@ -1,7 +1,7 @@
 #include "projection.hpp"
 
-namespace delta {
-namespace math {
+namespace dt {
+
 
 Projection::Projection(float start, float end) : start(start), end(end) {
 }
@@ -30,5 +30,5 @@ float Projection::calculate_overlap_with(const Projection& other) const {
     return std::min(end, other.end) - std::max(start, other.start);
 }
 
-}  // namespace math
-}  // namespace delta
+
+}

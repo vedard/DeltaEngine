@@ -5,7 +5,7 @@
 #include "collision.hpp"
 #include "body.hpp"
 
-namespace delta {
+namespace dt {
 
 class Collision;
 class World {
@@ -16,9 +16,9 @@ class World {
     int velocity_solving_iteration = 30;
     int position_solving_iteration = 1;
     float delta_time = 1.0f / 60.0f;
-    math::Vector gravity = math::Vector(0, 1000);
+    Vector gravity = Vector(0, 1000);
 
     void step();
 };
 
-}  // namespace delta
+}

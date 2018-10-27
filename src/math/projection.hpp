@@ -3,8 +3,8 @@
 #include "vector.hpp"
 #include <vector>
 
-namespace delta {
-namespace math {
+namespace dt {
+
 
 class Projection {
    public:
@@ -19,5 +19,5 @@ class Projection {
     float calculate_overlap_with(const Projection& other) const;
 };
 
-}  // namespace math
-}  // namespace delta
+
+}

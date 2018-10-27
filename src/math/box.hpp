@@ -2,8 +2,7 @@
 
 #include "vector.hpp"
 
-namespace delta {
-namespace math {
+namespace dt {
 
 class Box {
    public:
@@ -14,5 +13,4 @@ class Box {
     bool is_colliding_with(const Box& other) const;
 };
 
-}  // namespace math
-}  // namespace delta
+}

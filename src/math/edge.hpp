@@ -3,8 +3,8 @@
 #include "vector.hpp"
 #include <vector>
 
-namespace delta {
-namespace math {
+namespace dt {
+
 
 class Edge {
    public:
@@ -18,7 +18,7 @@ class Edge {
     }
 
 
-    static Edge GetBestEdgeInvolve(math::VectorList vertices, math::Vector n){
+    static Edge GetBestEdgeInvolve(VectorList vertices, Vector n){
         Vector current_vertex, previous_vertex, next_vertex;
 
         // Find the farthest vertex in the collision
@@ -34,8 +34,8 @@ class Edge {
         }
 
         // Find the 2 adjacent edge
-        math::Vector left_edge = current_vertex - next_vertex;
-        math::Vector right_edge = current_vertex - previous_vertex;
+        Vector left_edge = current_vertex - next_vertex;
+        Vector right_edge = current_vertex - previous_vertex;
 
         // The best edge is the most perpendicular to the separation normal.
         if (right_edge.normalize().dot(n) < left_edge.normalize().dot(n)){
@@ -58,7 +58,7 @@ class Edge {
 
         if (d1 * d2 < 0.0) {
             Vector e = v2 - v1;
-            double u = d1 / (d1 - d2);
+            float u = d1 / (d1 - d2);
             e *= u;
             e += v1;
             clipped_points.push_back(e);
@@ -69,5 +69,5 @@ class Edge {
 
 };
 
-}  // namespace math
-}  // namespace delta
+
+}

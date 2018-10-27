@@ -1,7 +1,7 @@
 #include "vector.hpp"
 
-namespace delta {
-namespace math {
+namespace dt {
+
 
 Vector::Vector(float x, float y) : x(x), y(y) {
 }
@@ -96,5 +96,5 @@ std::ostream& operator<<(std::ostream& os, const Vector& v) {
     return os;
 }
 
-}  // namespace math
-}  // namespace delta
+
+}
