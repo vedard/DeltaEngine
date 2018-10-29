@@ -9,7 +9,7 @@ void World::step() {
     collisions.clear();
     for (auto it = bodies.begin(); it != bodies.end(); it++) {
         for (auto it2 = it + 1; it2 != bodies.end(); it2++) {
-            Collision c(*it, *it2, this);
+            Collision c(*it, *it2);
             if (c.BroadDetection() && c.NarrowDetection()) {
                 collisions.push_back(c);
             }

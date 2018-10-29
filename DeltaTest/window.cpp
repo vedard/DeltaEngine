@@ -159,12 +159,27 @@ void Window::process_input() {
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
         world.bodies.back()->forces += dt::Vector(-10, 0);
+        world.bodies.back()->torque -= 10;
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
         world.bodies.back()->forces += dt::Vector(10, 0);
+        world.bodies.back()->torque += 10;
     }
      if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
-        world.bodies.back()->forces += dt::Vector(0, -100);
+         
+         for(auto&& other : world.bodies)
+         {
+             dt::Collision c(other, world.bodies.back());
+             if (c.BroadDetection() && c.NarrowDetection() && c.normal.y < 0 ){
+                 float angle = atan2f(c.normal.y, c.normal.x);
+                 if (angle > -3.f && angle < -0.1415) {
+                    world.bodies.back()->forces += dt::Vector(0, -300);
+                    other->forces -=  dt::Vector(0, -300);
+                    break;
+                 }
+             }
+         }
+
     }
 }
 

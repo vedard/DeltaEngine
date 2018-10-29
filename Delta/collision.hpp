@@ -18,7 +18,6 @@ class Collision {
    public:
     Body* A;
     Body* B;
-    World* world;
 
     Vector normal;
     VectorList contacts;
@@ -28,7 +27,7 @@ class Collision {
     float coefficient_static_friction;
     float coefficient_kinetic_friction;
 
-    Collision(Body* a, Body* b, World* w);
+    Collision(Body* a, Body* b);
     bool BroadDetection();
     bool NarrowDetection();
     void SolveVelocity();

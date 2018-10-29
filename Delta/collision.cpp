@@ -2,7 +2,7 @@
 
 namespace dt {
 
-Collision::Collision(Body* a, Body* b, World* w) : A(a), B(b), world(w) {
+Collision::Collision(Body* a, Body* b) : A(a), B(b) {
 }
 
 bool Collision::BroadDetection() {
