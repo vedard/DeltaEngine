@@ -184,8 +184,8 @@ void Collision::SolveVelocity() {
 
 void Collision::SolvePosition() {
     const float linear_slope = 0.0005f;
-    const float max_correction = 0.2f;
-    const float correction_percent = 0.4f;
+    const float max_correction = 0.4f;
+    const float correction_percent = 0.8f;
 
     // for (auto&& contact : contacts) {
         float correction = std::clamp((penetration - linear_slope) * correction_percent, 0.0f, max_correction) /

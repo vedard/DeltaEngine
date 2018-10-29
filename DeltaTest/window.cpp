@@ -9,47 +9,46 @@ Window::Window() {
     this->setFramerateLimit(60);
     font.loadFromFile("./res/Ubuntu-R.ttf");
 
-    this->test_big_ball();
-// this->test_cage();
+    // this->test_big_ball();
+this->test_cage();
     // this->test_pool();
 }
 
 void Window::test_cage() {
-    this->world.bodies.push_back(new dt::Body(dt::Vector(1366.f / 2.f, 5.f / 2.f),
-                                                 new dt::Rectangle(dt::Vector(1366, 5)), false,
-                                                 true));
-    this->world.bodies.push_back(new dt::Body(dt::Vector(1366.f / 2.f, 768.f - 5.f / 2.f),
-                                                 new dt::Rectangle(dt::Vector(1366, 5)), false,
-                                                 true));
-    this->world.bodies.push_back(new dt::Body(dt::Vector(5.f / 2.f, 768 / 2.f),
-                                                 new dt::Rectangle(dt::Vector(5, 768)), false,
-                                                 true));
-    this->world.bodies.push_back(new dt::Body(dt::Vector(1366.f - 5.f / 2.f, 768.f / 2.f),
-                                                 new dt::Rectangle(dt::Vector(5, 768)), false,
-                                                 true));
+    this->world.bodies.push_back(new dt::Body(dt::Vector(16.f / 2.f, 0.05f / 2.f),
+                                                 new dt::Rectangle(dt::Vector(16, 0.05f)), false, true, false));
+    this->world.bodies.push_back(new dt::Body(dt::Vector(16.f / 2.f, 9.f - 0.05f / 2.f),
+                                                 new dt::Rectangle(dt::Vector(16, 0.05f)), false,
+                                                 true, false));
+    this->world.bodies.push_back(new dt::Body(dt::Vector(0.05f / 2.f, 9 / 2.f),
+                                                 new dt::Rectangle(dt::Vector(0.05f, 9)), false,
+                                                 true,false));
+    this->world.bodies.push_back(new dt::Body(dt::Vector(16.f - 0.05f / 2.f, 9.f / 2.f),
+                                                 new dt::Rectangle(dt::Vector(0.05f, 9)), false,
+                                                 true, false));
 
     this->world.bodies.push_back(
-        new dt::Body(dt::Vector(700, 100), new dt::Circle(30.f), true, false));
+        new dt::Body(dt::Vector(8, 4), new dt::Rectangle(dt::Vector(1,1)), false, false, true));
 
-    std::mt19937 generator(std::random_device{}());
-    std::normal_distribution<float> speed_dis(0, 400);
-    std::normal_distribution<> position_x(600, 10);
-    std::normal_distribution<> position_y(375, 10);
-    std::normal_distribution<> radius(80.f, 10.f);
-    for (int i = 0; i < 20; i++) {
-        dt::Shape* shape = nullptr;
+    // std::mt19937 generator(std::random_device{}());
+    // std::normal_distribution<float> speed_dis(0, 400);
+    // std::normal_distribution<> position_x(600, 10);
+    // std::normal_distribution<> position_y(375, 10);
+    // std::normal_distribution<> radius(80.f, 10.f);
+    // for (int i = 0; i < 20; i++) {
+    //     dt::Shape* shape = nullptr;
 
-            shape = new dt::Rectangle(dt::Vector(radius(generator), radius(generator)));
+    //         shape = new dt::Rectangle(dt::Vector(radius(generator), radius(generator)));
 
-        dt::Body* body =
-            new dt::Body(dt::Vector(position_x(generator), position_y(generator)), shape, false, false);
-        body->velocity = dt::Vector(speed_dis(generator), speed_dis(generator));
-        this->world.bodies.push_back(body);
-    }
-    for(auto&& body : this->world.bodies)
-    {
-       body->coefficient_restitution =1.f; 
-    }
+    //     dt::Body* body =
+    //         new dt::Body(dt::Vector(position_x(generator), position_y(generator)), shape, false, false);
+    //     body->velocity = dt::Vector(speed_dis(generator), speed_dis(generator));
+    //     this->world.bodies.push_back(body);
+    // }
+    // for(auto&& body : this->world.bodies)
+    // {
+    //    body->coefficient_restitution =1.f; 
+    // }
 }
 
 void Window::test_big_ball() {
@@ -65,8 +64,8 @@ void Window::test_big_ball() {
     //                                                 dt::Rectangle(dt::Vector(radius(generator),
     //                                                 radius(generator))), true, false));
     // }
-    this->world.bodies.push_back(new dt::Body( dt::Vector(8.f, 7.5f), new dt::Rectangle(dt::Vector(14.f, 0.5f)), false, true));
-    this->world.bodies.push_back(new dt::Body( dt::Vector(15.f, 1.f), new dt::Rectangle(dt::Vector(0.5f, 0.5f)), true, false));
+    this->world.bodies.push_back(new dt::Body( dt::Vector(8.f, 7.5f), new dt::Rectangle(dt::Vector(14.f, 0.5f)), false, true, false));
+    this->world.bodies.push_back(new dt::Body( dt::Vector(15.f, 1.f), new dt::Rectangle(dt::Vector(0.5f, 0.5f)), true, false, false));
 
     this->world.bodies.back()->velocity = dt::Vector(-1.f, 0);
     this->world.bodies.back()->angular_velocity = 1.f;
@@ -74,19 +73,19 @@ void Window::test_big_ball() {
 }
 
 void Window::test_pool() {
-    this->world.bodies.push_back(new dt::Body(dt::Vector(700, 50), new dt::Rectangle(dt::Vector(1000, 10.f)), false, true));
-    this->world.bodies.push_back(new dt::Body(dt::Vector(440, 10), new dt::Rectangle(dt::Vector(10, 1000.f)), false, true));
-    this->world.bodies.push_back(new dt::Body(dt::Vector(750, 10), new dt::Rectangle(dt::Vector(10, 1000.f)), false, true));
+    this->world.bodies.push_back(new dt::Body(dt::Vector(700, 50), new dt::Rectangle(dt::Vector(1000, 10.f)), false, true, false));
+    this->world.bodies.push_back(new dt::Body(dt::Vector(440, 10), new dt::Rectangle(dt::Vector(10, 1000.f)), false, true, false));
+    this->world.bodies.push_back(new dt::Body(dt::Vector(750, 10), new dt::Rectangle(dt::Vector(10, 1000.f)), false, true, false));
     for (int i = 0; i < 5; i++) {
       for (int j = 0 + i; j < 5; j++) {
         dt::Body *c = new dt::Body(
             dt::Vector(500.f + j * 41.f - 20.f * i, 100.f + i * 41.f),
-            new dt::Circle(20.f), false, false);
+            new dt::Circle(20.f), false, false, false);
         this->world.bodies.push_back(c);
       }
     }
 
-    dt::Body *b = new dt::Body(dt::Vector(580.f, 900.f), new dt::Circle(20.f), false, false);
+    dt::Body *b = new dt::Body(dt::Vector(580.f, 900.f), new dt::Circle(20.f), false, false, false);
     b->velocity = dt::Vector(0.f, -1900.f);
 
     
@@ -125,12 +124,13 @@ void Window::process_input() {
             if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
                 world.bodies.push_back(new dt::Body(
                     dt::Vector(sf::Mouse::getPosition(*this).x / 85.f, sf::Mouse::getPosition(*this).y / 85.f),
-                    new dt::Rectangle(dt::Vector(1.f, 1.f)), true, false));
+                    new dt::Rectangle(dt::Vector(1.f, 1.f)), true, false, false));
             }
             if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
                 world.bodies.push_back(new dt::Body(
                     dt::Vector(sf::Mouse::getPosition(*this).x/ 85.f, sf::Mouse::getPosition(*this).y/ 85.f),
-                    new dt::Circle(0.7f), true, false));
+                    new dt::Circle(0.7f), true, false, false));
+
             }
             if (sf::Mouse::isButtonPressed(sf::Mouse::Middle)) {
                 // world.bodies.push_back(new dt::Body(
@@ -144,7 +144,7 @@ void Window::process_input() {
                 s->points.push_back(dt::Vector(vertex_position(generator), -vertex_position(generator)));
                 s->points.push_back(dt::Vector(vertex_position(generator), vertex_position(generator)));
                 s->points.push_back(dt::Vector(-vertex_position(generator), vertex_position(generator)));
-                auto *body = new dt::Body(dt::Vector(sf::Mouse::getPosition(*this).x/ 85.f, sf::Mouse::getPosition(*this).y/ 85.f),s, true, false);
+                auto *body = new dt::Body(dt::Vector(sf::Mouse::getPosition(*this).x/ 85.f, sf::Mouse::getPosition(*this).y/ 85.f),s, true, false, false);
                 world.bodies.push_back(body);
                 
             }
@@ -152,16 +152,19 @@ void Window::process_input() {
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-        world.bodies.back()->forces += dt::Vector(0, -100);
+        world.bodies.back()->forces += dt::Vector(0, -10);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-        world.bodies.back()->forces += dt::Vector(0, 100);
+        world.bodies.back()->forces += dt::Vector(0, 10);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-        world.bodies.back()->forces += dt::Vector(-100, 0);
+        world.bodies.back()->forces += dt::Vector(-10, 0);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-        world.bodies.back()->forces += dt::Vector(100, 0);
+        world.bodies.back()->forces += dt::Vector(10, 0);
+    }
+     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+        world.bodies.back()->forces += dt::Vector(0, -100);
     }
 }
 

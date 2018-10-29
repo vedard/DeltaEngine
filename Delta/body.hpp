@@ -25,12 +25,13 @@ class Body {
     float coefficient_static_friction = 0.4f;
     float coefficient_kinetic_friction = 0.2f;
 
-    bool is_static;
-    bool is_gravity_affected;
+    bool is_static = false;
+    bool is_gravity_affected = true;
+    bool fixed_rotation = false;
 
     Shape* shape;
 
-    Body(Vector position, Shape* shape, bool is_gravity_affected, bool is_static);
+    Body(Vector position, Shape* shape, bool is_gravity_affected, bool is_static, bool fixed_rotation);
     void compute_mass();
 };
 
