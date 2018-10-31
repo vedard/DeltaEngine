@@ -10,7 +10,7 @@ void World::step() {
     for (auto it = bodies.begin(); it != bodies.end(); it++) {
         for (auto it2 = it + 1; it2 != bodies.end(); it2++) {
             Collision c(*it, *it2);
-            if (c.BroadDetection() && c.NarrowDetection()) {
+            if (c.Detect()) {
                 collisions.push_back(c);
             }
         }
@@ -23,7 +23,13 @@ void World::step() {
             if (body->is_gravity_affected) {
                 body->velocity += gravity * delta_time;
             }
-            body->angular_velocity += body->torque * body->inverse_mass * delta_time;
+
+            if (!body->fixed_rotation){
+                body->angular_velocity += body->torque * body->inverse_mass * delta_time;
+            }
+
+			body->velocity *= 1.0f / (1.0f + delta_time * body->linear_damping);
+			body->angular_velocity *= 1.0f / (1.0f + delta_time * body->angular_damping);
         }
     }
 

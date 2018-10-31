@@ -26,9 +26,17 @@ void Window::test_cage() {
     this->world.bodies.push_back(new dt::Body(dt::Vector(16.f - 0.05f / 2.f, 9.f / 2.f),
                                                  new dt::Rectangle(dt::Vector(0.05f, 9)), false,
                                                  true, false));
+    dt::Shape* stair = new dt::Shape();
+    stair->points.push_back(dt::Vector(3.f, 1.f));
+    stair->points.push_back(dt::Vector(-3.f, 1.f));
+    stair->points.push_back(dt::Vector(3.f, -1.f));
+
+    this->world.bodies.push_back(new dt::Body(dt::Vector(10.f,8.f), stair, false, true, true));
 
     this->world.bodies.push_back(
-        new dt::Body(dt::Vector(8, 4), new dt::Rectangle(dt::Vector(1,1)), false, false, true));
+        new dt::Body(dt::Vector(8, 4), new dt::Rectangle(dt::Vector(1.f,1.f)), false, false, true));
+
+    this->world.bodies.back()->linear_damping = 4.f;
 
     // std::mt19937 generator(std::random_device{}());
     // std::normal_distribution<float> speed_dis(0, 400);
@@ -151,26 +159,28 @@ void Window::process_input() {
         }
     }
 
+    dt::Vector direction;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-        world.bodies.back()->forces += dt::Vector(0, -10);
+        direction -= dt::Vector(0, 1);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-        world.bodies.back()->forces += dt::Vector(0, 10);
+        direction += dt::Vector(0, 1);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-        world.bodies.back()->forces += dt::Vector(-10, 0);
+        direction -= dt::Vector(1, 0);
         world.bodies.back()->torque -= 10;
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-        world.bodies.back()->forces += dt::Vector(10, 0);
+        direction += dt::Vector(1, 0);
         world.bodies.back()->torque += 10;
     }
+    world.bodies.back()->forces += direction.normalize() * 20;
      if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
          
          for(auto&& other : world.bodies)
          {
              dt::Collision c(other, world.bodies.back());
-             if (c.BroadDetection() && c.NarrowDetection() && c.normal.y < 0 ){
+             if (c.Detect() && c.normal.y < 0 ){
                  float angle = atan2f(c.normal.y, c.normal.x);
                  if (angle > -3.f && angle < -0.1415) {
                     world.bodies.back()->forces += dt::Vector(0, -300);

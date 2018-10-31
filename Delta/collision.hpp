@@ -28,12 +28,13 @@ class Collision {
     float coefficient_kinetic_friction;
 
     Collision(Body* a, Body* b);
-    bool BroadDetection();
-    bool NarrowDetection();
+    bool Detect();
     void SolveVelocity();
     void SolvePosition();
 
    private:
+    bool BroadDetection();
+    bool NarrowDetection();
     bool CircleCircleDetection(Circle* shape_a, Circle* shape_b);
     bool PolygonPolygonDetection(Shape* shape_a, Shape* shape_b);
 

@@ -21,6 +21,10 @@ class Rectangle : public Shape {
     float get_area() const {
         return size.x * size.y;
     }
+
+     Vector get_centroid() const {
+        return this->body->position;
+    }
 };
 
 }

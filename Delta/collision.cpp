@@ -5,6 +5,10 @@ namespace dt {
 Collision::Collision(Body* a, Body* b) : A(a), B(b) {
 }
 
+bool Collision::Detect(){
+    return BroadDetection() && NarrowDetection();
+}
+
 bool Collision::BroadDetection() {
     if (A == B) return false;  // A and B are the same body
 
@@ -86,16 +90,16 @@ bool Collision::PolygonPolygonDetection(Shape* shape_a, Shape* shape_b) {
     Vector reference_normal = referance_edge.edge.cross(-1.f);
 
     // if (flip){
-    //     reference_normal *= -1.f;
+        // reference_normal *= -1.f;
     // }
 
     float max = reference_normal.dot(referance_edge.max);
 
     if (reference_normal.dot(this->contacts[0]) - max < 0.f) {
-        this->contacts.erase(std::remove(this->contacts.begin(), this->contacts.end(), this->contacts[0]));
+        this->contacts.erase(std::remove(this->contacts.begin(), this->contacts.end(), this->contacts[0]), this->contacts.end());
     }
     if (reference_normal.dot(this->contacts[1]) - max < 0.f) {
-        this->contacts.erase(std::remove(this->contacts.begin(), this->contacts.end(), this->contacts[1]));
+        this->contacts.erase(std::remove(this->contacts.begin(), this->contacts.end(), this->contacts[1]), this->contacts.end());
     }
 
     return true;

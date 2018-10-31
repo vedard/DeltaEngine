@@ -10,10 +10,12 @@ class Body {
     Vector position;
     Vector velocity;
     Vector forces;
+    float linear_damping = 0.f;
 
-    float angle = 0;
-    float angular_velocity = 0;
-    float torque = 0;
+    float angle = 0.f;
+    float angular_velocity = 0.f;
+    float torque = 0.f;
+    float angular_damping = 0.f;
 
     float mass = 1.f;
     float inverse_mass = 1.f / 1.f;
