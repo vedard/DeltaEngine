@@ -33,7 +33,8 @@ class Body {
 
     Shape* shape;
 
-    Body(Vector position, Shape* shape, bool is_gravity_affected, bool is_static, bool fixed_rotation);
+    Body(Shape* shape);
+    Body(Vector position, Shape* shape, bool is_gravity_affected = true, bool is_static = false, bool fixed_rotation = false);
     void compute_mass();
 };
 

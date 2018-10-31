@@ -1,15 +1,15 @@
 all:
 	@$(MAKE) --no-print-directory -C Delta
-	@$(MAKE) --no-print-directory -C DeltaTest
+	@$(MAKE) --no-print-directory -C DeltaPlayground
 
 Delta:
 	@$(MAKE) --no-print-directory -C Delta
 
-DeltaTest:
-	@$(MAKE) --no-print-directory -C DeltaTest
+DeltaPlayground:
+	@$(MAKE) --no-print-directory -C DeltaPlayground
 
 clean:
 	@$(MAKE) --no-print-directory -C Delta clean
-	@$(MAKE) --no-print-directory -C DeltaTest clean
+	@$(MAKE) --no-print-directory -C DeltaPlayground clean
 
-.PHONY: clean Delta DeltaTest
+.PHONY: clean Delta DeltaPlayground

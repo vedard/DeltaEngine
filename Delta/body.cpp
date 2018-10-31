@@ -2,8 +2,13 @@
 
 namespace dt {
 
+Body::Body(Shape* shape): shape(shape) {
+    this->shape->body = this;
+    this->compute_mass();
+}
+
 Body::Body(Vector position, Shape* shape, bool is_gravity_affected, bool is_static, bool fixed_rotation)
-    : position(position), is_static(is_static), is_gravity_affected(is_gravity_affected), shape(shape), fixed_rotation(fixed_rotation) {
+    : position(position), is_static(is_static), is_gravity_affected(is_gravity_affected), fixed_rotation(fixed_rotation), shape(shape) {
     this->shape->body = this;
     this->compute_mass();
 }

@@ -1,7 +1,7 @@
-EXECUTABLE:= deltatest
+EXECUTABLE:= DeltaPlayground
 CXX := g++
 SRCDIR := .
-BUILDDIR := ../build/DeltaTest
+BUILDDIR := ../build/DeltaPlayground
 BINDIR := ../bin
 TARGET := $(BINDIR)/$(EXECUTABLE)
 

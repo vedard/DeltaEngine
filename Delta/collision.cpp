@@ -67,10 +67,10 @@ bool Collision::PolygonPolygonDetection(Shape* shape_a, Shape* shape_b) {
     Edge incident_edge = Edge::GetBestEdgeInvolve(shape_b->get_vertices(), this->normal * -1.f);
 
     // Identify the reference edge and incident edge
-    bool flip = false;
+    // bool flip = false;
     if (std::abs(referance_edge.edge.dot(this->normal)) > std::abs(incident_edge.edge.dot(this->normal))) {
         std::swap(referance_edge, incident_edge);
-        flip = true;
+        // flip = true;
     }
 
     Vector referance_vector = referance_edge.edge.normalize();
