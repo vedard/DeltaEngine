@@ -45,8 +45,6 @@ void World::step() {
         if (!body->is_static) {
             body->position += body->velocity * delta_time;
             body->angle += body->angular_velocity * delta_time;
-
-            //body->velocity = (body->velocity) / (1 + 0.0001f);
         }
     }
 

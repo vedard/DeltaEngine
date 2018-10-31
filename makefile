@@ -12,4 +12,10 @@ clean:
 	@$(MAKE) --no-print-directory -C Delta clean
 	@$(MAKE) --no-print-directory -C DeltaPlayground clean
 
-.PHONY: clean Delta DeltaPlayground
+install:
+	@$(MAKE) --no-print-directory -C Delta install
+
+uninstall:
+	@$(MAKE) --no-print-directory -C Delta uninstall
+
+.PHONY: clean Delta DeltaPlayground install

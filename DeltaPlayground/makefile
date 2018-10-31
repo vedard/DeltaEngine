@@ -13,7 +13,7 @@ CXXFLAGS := -Wfatal-errors -Wall -g -std=c++17  -I..
 LIB := -pthread -L$(BINDIR) -ldelta `pkg-config sfml-graphics sfml-window sfml-system --libs`
 
 
-run: $(TARGET) 
+run: $(TARGET) $(BINDIR)/libdelta.a
 	@echo Lauching $(EXECUTABLE)
 	@./$(TARGET)
 
