@@ -7,7 +7,6 @@ namespace dt {
 
 class Body {
    public:
-
     // The position in the world (meters)
     Vector position;
 
@@ -47,7 +46,7 @@ class Body {
     // The quantity of mass for a area or shape
     float density = 1.f;
 
-    // Ranges from 0 to 1, where 1 would be a perfectly elastic collision 
+    // Ranges from 0 to 1, where 1 would be a perfectly elastic collision
     float coefficient_restitution = 0.2f;
 
     // The ratio of the force of friction when they are not moving
@@ -74,4 +73,4 @@ class Body {
     void compute_mass();
 };
 
-}
+}  // namespace dt

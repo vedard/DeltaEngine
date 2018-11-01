@@ -1,16 +1,15 @@
 #pragma once
 
 #include <vector>
-#include "math/vector.hpp"
-#include "collision.hpp"
 #include "body.hpp"
+#include "collision.hpp"
+#include "math/vector.hpp"
 
 namespace dt {
 
 class Collision;
 class World {
    public:
-
     // List of bodies to update in the next step
     std::vector<Body*> bodies;
 
@@ -33,4 +32,4 @@ class World {
     void step();
 };
 
-}
+}  // namespace dt

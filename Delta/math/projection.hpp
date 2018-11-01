@@ -1,10 +1,9 @@
 #pragma once
 
-#include "vector.hpp"
 #include <vector>
+#include "vector.hpp"
 
 namespace dt {
-
 
 class Projection {
    public:
@@ -19,5 +18,4 @@ class Projection {
     float calculate_overlap_with(const Projection& other) const;
 };
 
-
-}
+}  // namespace dt

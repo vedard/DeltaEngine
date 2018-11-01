@@ -1,7 +1,7 @@
 #include <iostream>
 #include "window.hpp"
 
-int main(){
+int main() {
     Window().run();
     return 0;
 }

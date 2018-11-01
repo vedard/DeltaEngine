@@ -3,9 +3,9 @@
 #include <algorithm>
 #include <vector>
 #include "body.hpp"
+#include "math/edge.hpp"
 #include "math/projection.hpp"
 #include "math/vector.hpp"
-#include "math/edge.hpp"
 #include "shapes/circle.hpp"
 #include "shapes/shape.hpp"
 #include "world.hpp"
@@ -49,7 +49,6 @@ class Collision {
     bool NarrowDetection();
     bool CircleCircleDetection(Circle* shape_a, Circle* shape_b);
     bool PolygonPolygonDetection(Shape* shape_a, Shape* shape_b);
-
 };
 
-}
+}  // namespace dt

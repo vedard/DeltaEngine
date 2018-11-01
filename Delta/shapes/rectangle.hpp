@@ -4,7 +4,6 @@
 
 namespace dt {
 
-
 class Rectangle : public Shape {
    public:
     Vector size;
@@ -25,4 +24,4 @@ class Rectangle : public Shape {
     }
 };
 
-}
+}  // namespace dt

@@ -2,7 +2,6 @@
 
 namespace dt {
 
-
 class Circle;
 class Rectangle;
 class Shape;
@@ -13,5 +12,4 @@ class AbstractShapeRenderer {
     virtual void render(Shape *shape) = 0;
 };
 
-
-}
+}  // namespace dt

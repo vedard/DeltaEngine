@@ -13,4 +13,4 @@ class Box {
     bool is_colliding_with(const Box& other) const;
 };
 
-}
+}  // namespace dt

@@ -4,7 +4,6 @@
 
 namespace dt {
 
-
 class Circle : public Shape {
    public:
     float radius = 10.f;
@@ -26,13 +25,12 @@ class Circle : public Shape {
 
     Box get_bounding_box() const {
         return Box(Vector(body->position.x - radius, body->position.y - radius),
-                         Vector(radius * 2, radius * 2));
+                   Vector(radius * 2, radius * 2));
     }
 
-    void render(AbstractShapeRenderer *renderer){
+    void render(AbstractShapeRenderer *renderer) {
         renderer->render(this);
     }
 };
 
-
-}
+}  // namespace dt

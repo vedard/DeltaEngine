@@ -5,21 +5,20 @@ namespace dt {
 Collision::Collision(Body* a, Body* b) : A(a), B(b) {
 }
 
-bool Collision::Detect(){
+bool Collision::Detect() {
     return BroadDetection() && NarrowDetection();
 }
 
 bool Collision::BroadDetection() {
-
     // A and B are the same body
-    if (A == B) return false;  
+    if (A == B) return false;
 
     // They might be colliding, but they won't move anyway
     if (A->is_static && B->is_static) return false;
 
     // They moght be colliding, but it won't change anything
     if (A->mass == INFINITY && B->mass == INFINITY)
-        return false;  
+        return false;
 
     // Cheap AABB Test
     if (!A->shape->get_bounding_box().is_colliding_with(B->shape->get_bounding_box())) return false;
@@ -63,7 +62,7 @@ bool Collision::PolygonPolygonDetection(Shape* shape_a, Shape* shape_b) {
             return false;
         }
     }
-    
+
     if ((shape_b->get_centroid() - shape_a->get_centroid()).dot(this->normal) < 0.f) {
         this->normal = this->normal * -1.f;
     }
@@ -79,15 +78,15 @@ bool Collision::PolygonPolygonDetection(Shape* shape_a, Shape* shape_b) {
     }
 
     Vector referance_vector = referance_edge.edge.normalize();
-    
+
     float o1 = referance_vector.dot(referance_edge.point_1);
     this->contacts = Edge::GetClippedPoints(incident_edge.point_1, incident_edge.point_2, referance_vector, o1);
-    if (this->contacts.size() < 2){
+    if (this->contacts.size() < 2) {
         return true;
     }
 
     float o2 = referance_vector.dot(referance_edge.point_2);
-    this->contacts  = Edge::GetClippedPoints(this->contacts[0], this->contacts[1], referance_vector * -1.f, -o2);
+    this->contacts = Edge::GetClippedPoints(this->contacts[0], this->contacts[1], referance_vector * -1.f, -o2);
     if (this->contacts.size() < 2) {
         return true;
     }
@@ -95,7 +94,7 @@ bool Collision::PolygonPolygonDetection(Shape* shape_a, Shape* shape_b) {
     Vector reference_normal = referance_edge.edge.cross(-1.f);
 
     // if (flip){
-        // reference_normal *= -1.f;
+    // reference_normal *= -1.f;
     // }
 
     float max = reference_normal.dot(referance_edge.max);
@@ -137,18 +136,16 @@ bool Collision::CircleCircleDetection(Circle* shape_a, Circle* shape_b) {
 }
 
 void Collision::SolveVelocity() {
-
     for (auto&& contact : contacts) {
-
         Vector ra = contact - A->position;
         Vector rb = contact - B->position;
-        float raCrossN = ra.cross(normal); 
+        float raCrossN = ra.cross(normal);
         float rbCrossN = rb.cross(normal);
-    
+
         float sum_inverse_mass = (A->inverse_mass + B->inverse_mass) + raCrossN * raCrossN * A->inverse_inertia + rbCrossN * rbCrossN * B->inverse_inertia;
 
         // impact speed
-        Vector velocity_difference = B->velocity - A->velocity  + rb.cross(-B->angular_velocity) - ra.cross(-A->angular_velocity);
+        Vector velocity_difference = B->velocity - A->velocity + rb.cross(-B->angular_velocity) - ra.cross(-A->angular_velocity);
         float dot = velocity_difference.dot(this->normal);
 
         // Already Moving away
@@ -168,7 +165,7 @@ void Collision::SolveVelocity() {
 
         // Friction
         // velocity_difference = B->velocity - A->velocity;
-        velocity_difference = B->velocity - A->velocity  + rb.cross(-B->angular_velocity) - ra.cross(-A->angular_velocity);
+        velocity_difference = B->velocity - A->velocity + rb.cross(-B->angular_velocity) - ra.cross(-A->angular_velocity);
 
         Vector tangent = (velocity_difference - (normal * velocity_difference.dot(normal))).normalize();
         float impulse_tangent = velocity_difference.dot(tangent) * -1.f / sum_inverse_mass / ((float)contacts.size());
@@ -197,7 +194,7 @@ void Collision::SolvePosition() {
     const float correction_percent = 0.8f;
 
     float correction = std::clamp((penetration - linear_slope) * correction_percent, 0.0f, max_correction) /
-                    (A->inverse_mass + B->inverse_mass);
+                       (A->inverse_mass + B->inverse_mass);
     Vector vcorrection = normal * correction;
 
     // Update position
@@ -205,4 +202,4 @@ void Collision::SolvePosition() {
     B->position += vcorrection * B->inverse_mass;
 }
 
-}
+}  // namespace dt

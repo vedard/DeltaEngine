@@ -37,4 +37,4 @@ class Vector {
 
 typedef std::vector<Vector> VectorList;
 
-}
+}  // namespace dt

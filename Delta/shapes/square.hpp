@@ -4,7 +4,6 @@
 
 namespace dt {
 
-
 class Square : public Shape {
    public:
     float size;
@@ -20,9 +19,9 @@ class Square : public Shape {
         return size * size;
     }
 
-    Vector get_centroid() const { 
-        return this->body->position; 
+    Vector get_centroid() const {
+        return this->body->position;
     }
 };
 
-}
+}  // namespace dt

@@ -2,7 +2,7 @@
 
 namespace dt {
 
-Body::Body(Shape* shape): shape(shape) {
+Body::Body(Shape* shape) : shape(shape) {
     this->shape->body = this;
     this->compute_mass();
 }
@@ -25,8 +25,8 @@ void Body::compute_mass() {
 
         Box bounding_box = this->shape->get_bounding_box();
 
-        if (!this->fixed_rotation){
-            this->inertia = this->mass * (bounding_box.size.x * bounding_box.size.x + bounding_box.size.y * bounding_box.size.y) / 12.f ;
+        if (!this->fixed_rotation) {
+            this->inertia = this->mass * (bounding_box.size.x * bounding_box.size.x + bounding_box.size.y * bounding_box.size.y) / 12.f;
             this->inverse_inertia = 1.f / this->inertia;
         } else {
             this->inertia = INFINITY;
@@ -35,4 +35,4 @@ void Body::compute_mass() {
     }
 }
 
-}
+}  // namespace dt

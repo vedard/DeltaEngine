@@ -1,15 +1,13 @@
 #pragma once
 
-#include "abstract_shape_renderer.hpp"
-#include "../math/vector.hpp"
-#include "../math/box.hpp"
 #include <vector>
+#include "../math/box.hpp"
+#include "../math/vector.hpp"
+#include "abstract_shape_renderer.hpp"
 
 namespace dt {
 
 class Body;
-
-
 
 class Shape {
    public:
@@ -25,5 +23,4 @@ class Shape {
     virtual void render(AbstractShapeRenderer *renderer);
 };
 
-
-}
+}  // namespace dt

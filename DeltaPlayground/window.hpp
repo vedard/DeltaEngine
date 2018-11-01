@@ -28,4 +28,3 @@ class Window : public sf::RenderWindow, public dt::AbstractShapeRenderer {
     void render(dt::Circle *shape);
     void render(dt::Shape *shape);
 };
-

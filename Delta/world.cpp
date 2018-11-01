@@ -4,7 +4,6 @@
 namespace dt {
 
 void World::step() {
-
     // Check for collisions
     collisions.clear();
     for (auto it = bodies.begin(); it != bodies.end(); it++) {
@@ -24,12 +23,12 @@ void World::step() {
                 body->velocity += gravity * delta_time;
             }
 
-            if (!body->fixed_rotation){
+            if (!body->fixed_rotation) {
                 body->angular_velocity += body->torque * body->inverse_mass * delta_time;
             }
 
-			body->velocity *= 1.0f / (1.0f + delta_time * body->linear_damping);
-			body->angular_velocity *= 1.0f / (1.0f + delta_time * body->angular_damping);
+            body->velocity *= 1.0f / (1.0f + delta_time * body->linear_damping);
+            body->angular_velocity *= 1.0f / (1.0f + delta_time * body->angular_damping);
         }
     }
 
@@ -62,4 +61,4 @@ void World::step() {
     }
 }
 
-}
+}  // namespace dt

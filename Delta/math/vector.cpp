@@ -2,7 +2,6 @@
 
 namespace dt {
 
-
 Vector::Vector(float x, float y) : x(x), y(y) {
 }
 
@@ -34,7 +33,7 @@ float Vector::cross(const Vector& v) const {
     return x * v.y - y * v.x;
 }
 
-Vector Vector::cross(const float z) const{
+Vector Vector::cross(const float z) const {
     return Vector(y * z, x * -z);
 }
 
@@ -96,5 +95,4 @@ std::ostream& operator<<(std::ostream& os, const Vector& v) {
     return os;
 }
 
-
-}
+}  // namespace dt

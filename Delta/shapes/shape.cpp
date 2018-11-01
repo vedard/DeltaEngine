@@ -3,7 +3,6 @@
 
 namespace dt {
 
-
 Shape::Shape() {
 }
 
@@ -36,11 +35,9 @@ VectorList Shape::get_vertices() const {
     VectorList _vertices;
 
     for (auto&& vertex : this->points) {
-
         _vertices.push_back(Vector(
             body->position.x + (vertex.x) * std::cos(body->angle) - (vertex.y) * std::sin(body->angle),
-            body->position.y + (vertex.x) * std::sin(body->angle) + (vertex.y) * std::cos(body->angle)
-        ));
+            body->position.y + (vertex.x) * std::sin(body->angle) + (vertex.y) * std::cos(body->angle)));
     }
     return _vertices;
 }
@@ -77,5 +74,4 @@ Box Shape::get_bounding_box() const {
     return Box(Vector(minx, miny), Vector(maxx - minx, maxy - miny));
 }
 
-
-}
+}  // namespace dt
