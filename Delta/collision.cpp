@@ -10,12 +10,16 @@ bool Collision::Detect(){
 }
 
 bool Collision::BroadDetection() {
-    if (A == B) return false;  // A and B are the same body
 
+    // A and B are the same body
+    if (A == B) return false;  
+
+    // They might be colliding, but they won't move anyway
     if (A->is_static && B->is_static) return false;
 
+    // They moght be colliding, but it won't change anything
     if (A->mass == INFINITY && B->mass == INFINITY)
-        return false;  // They might be colliding, but they won't move anyway
+        return false;  
 
     // Cheap AABB Test
     if (!A->shape->get_bounding_box().is_colliding_with(B->shape->get_bounding_box())) return false;
@@ -23,6 +27,7 @@ bool Collision::BroadDetection() {
     coefficient_restitution = std::min(A->coefficient_restitution, B->coefficient_restitution);
     coefficient_static_friction = std::sqrt(A->coefficient_static_friction * B->coefficient_static_friction);
     coefficient_kinetic_friction = std::sqrt(A->coefficient_kinetic_friction * B->coefficient_kinetic_friction);
+
     return true;
 }
 
@@ -191,16 +196,13 @@ void Collision::SolvePosition() {
     const float max_correction = 0.4f;
     const float correction_percent = 0.8f;
 
-    // for (auto&& contact : contacts) {
-        float correction = std::clamp((penetration - linear_slope) * correction_percent, 0.0f, max_correction) /
-                        (A->inverse_mass + B->inverse_mass);
-        Vector vcorrection = normal * correction;
+    float correction = std::clamp((penetration - linear_slope) * correction_percent, 0.0f, max_correction) /
+                    (A->inverse_mass + B->inverse_mass);
+    Vector vcorrection = normal * correction;
 
-        // Update position
-        A->position -= vcorrection * A->inverse_mass;
-        B->position += vcorrection * B->inverse_mass;
-    
-    // }
+    // Update position
+    A->position -= vcorrection * A->inverse_mass;
+    B->position += vcorrection * B->inverse_mass;
 }
 
 }

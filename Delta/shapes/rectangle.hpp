@@ -1,7 +1,5 @@
 #pragma once
 
-#include <algorithm>
-#include <cmath>
 #include "shape.hpp"
 
 namespace dt {
@@ -22,7 +20,7 @@ class Rectangle : public Shape {
         return size.x * size.y;
     }
 
-     Vector get_centroid() const {
+    Vector get_centroid() const {
         return this->body->position;
     }
 };

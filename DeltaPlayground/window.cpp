@@ -132,7 +132,7 @@ void Window::process_input() {
             if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
                 world.bodies.push_back(new dt::Body(
                     dt::Vector(sf::Mouse::getPosition(*this).x / 85.f, sf::Mouse::getPosition(*this).y / 85.f),
-                    new dt::Rectangle(dt::Vector(1.f, 1.f)), true, false, false));
+                    new dt::Square(1.f), true, false, false));
             }
             if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
                 world.bodies.push_back(new dt::Body(
