@@ -70,7 +70,7 @@ void Window::process_input() {
             if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
                 world.bodies.push_back(new dt::Body(
                     dt::Vector(sf::Mouse::getPosition(*this).x / 85.f, sf::Mouse::getPosition(*this).y / 85.f),
-                    new dt::Ellipse(0.3f, 0.7f), true, false, false));
+                    new dt::Circle(0.6f), true, false, false));
             }
             if (sf::Mouse::isButtonPressed(sf::Mouse::Middle)) {
                 // world.bodies.push_back(new dt::Body(

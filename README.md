@@ -1,6 +1,10 @@
 # Delta
 A 2D physics engine
 
+## Demo
+
+![](./doc/screenshot.gif)
+
 ## Example
 
 ```c++
