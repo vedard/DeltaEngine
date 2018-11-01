@@ -18,4 +18,7 @@ install:
 uninstall:
 	@$(MAKE) --no-print-directory -C Delta uninstall
 
-.PHONY: clean Delta DeltaPlayground install
+format:
+	@find . -regex '.*\.\(cpp\|hpp\|cc\|cxx\)' -exec clang-format -style=file -i {} \;
+
+.PHONY: clean Delta DeltaPlayground install uninstall format
