@@ -36,4 +36,4 @@ uninstall:
 clean:
 	$(RM) -r $(BUILDDIR)/* $(TARGET)
 
-.PHONY: clean
+.PHONY: clean install uninstall

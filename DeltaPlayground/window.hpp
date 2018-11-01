@@ -6,7 +6,7 @@
 #include <sstream>
 #include "Delta/delta.hpp"
 
-class Window : public sf::RenderWindow, public dt::AbstractShapeRenderer {
+class Window : public sf::RenderWindow {
    public:
     Window();
     void run();

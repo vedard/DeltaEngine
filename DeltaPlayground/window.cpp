@@ -25,15 +25,15 @@ Window::Window() {
     this->world.bodies.push_back(new dt::Body(dt::Vector(16.f - 0.05f / 2.f, 9.f / 2.f),
                                               new dt::Rectangle(dt::Vector(0.05f, 9)), false,
                                               true, false));
-    dt::Shape* stair = new dt::Shape();
-    stair->points.push_back(dt::Vector(3.f, 1.f));
-    stair->points.push_back(dt::Vector(-3.f, 1.f));
-    stair->points.push_back(dt::Vector(3.f, -1.f));
 
-    this->world.bodies.push_back(new dt::Body(dt::Vector(10.f, 8.f), stair, false, true, true));
+    dt::Shape* rampshape = new dt::Shape({dt::Vector(3.f, 1.f),
+                                          dt::Vector(-3.f, 1.f),
+                                          dt::Vector(3.f, -1.f)});
+
+    this->world.bodies.push_back(new dt::Body(dt::Vector(10.f, 8.f), rampshape, false, true, true));
 
     this->world.bodies.push_back(
-        new dt::Body(dt::Vector(8, 4), new dt::Rectangle(dt::Vector(1.f, 1.f)), false, false, true));
+        new dt::Body(dt::Vector(8, 4), new dt::Square(1.f), false, true, true));
 
     this->world.bodies.back()->linear_damping = 4.f;
 }
@@ -70,7 +70,7 @@ void Window::process_input() {
             if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
                 world.bodies.push_back(new dt::Body(
                     dt::Vector(sf::Mouse::getPosition(*this).x / 85.f, sf::Mouse::getPosition(*this).y / 85.f),
-                    new dt::Circle(0.7f), true, false, false));
+                    new dt::Ellipse(0.3f, 0.7f), true, false, false));
             }
             if (sf::Mouse::isButtonPressed(sf::Mouse::Middle)) {
                 // world.bodies.push_back(new dt::Body(
@@ -125,7 +125,11 @@ void Window::render() {
     clear(sf::Color(20, 20, 20));
 
     for (auto&& body : world.bodies) {
-        body->shape->render(this);
+        if (dynamic_cast<dt::Circle*>(body->shape)){
+            this->render(dynamic_cast<dt::Circle*>(body->shape));
+        } else {
+            this->render(body->shape);
+        }
     }
 
     sf::CircleShape image;
@@ -148,7 +152,6 @@ void Window::render(dt::Circle* shape) {
     image.setFillColor(sf::Color::Transparent);
     image.setOutlineColor(sf::Color::Cyan);
     image.setOutlineThickness(1.f / 85.f);
-
     draw(image);
 }
 

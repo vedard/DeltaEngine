@@ -6,6 +6,16 @@ namespace dt {
 Shape::Shape() {
 }
 
+Shape::Shape(std::initializer_list<Vector> points){
+    
+    for(auto&& point : points)
+    {
+        this->points.push_back(point);   
+    }
+    
+
+}
+
 float Shape::get_area() const {
     float area = 0.f;
 
@@ -40,10 +50,6 @@ VectorList Shape::get_vertices() const {
             body->position.y + (vertex.x) * std::sin(body->angle) + (vertex.y) * std::cos(body->angle)));
     }
     return _vertices;
-}
-
-void Shape::render(AbstractShapeRenderer* renderer) {
-    renderer->render(this);
 }
 
 Vector Shape::get_centroid() const {

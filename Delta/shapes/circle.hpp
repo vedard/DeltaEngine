@@ -1,35 +1,19 @@
 #pragma once
 
-#include "shape.hpp"
+#include "ellipse.hpp"
 
 namespace dt {
 
-class Circle : public Shape {
+class Circle : public Ellipse {
    public:
     float radius = 10.f;
 
-    Circle(float radius, int vertex = 16) : radius(radius) {
-        float increment = 2.0f * M_PI / vertex;
-        for (float angle = 0.0f; angle <= 2.0f * M_PI; angle += increment) {
-            this->points.push_back(Vector(radius * std::cos(angle), radius * std::sin(angle)));
-        }
+    Circle(float radius, int vertex = 16) : Ellipse(radius, radius, vertex), radius(radius) {
     }
 
-    float get_area() const {
-        return M_PI * radius * radius;
-    }
-
-    Vector get_centroid() const {
-        return this->body->position;
-    }
-
-    Box get_bounding_box() const {
-        return Box(Vector(body->position.x - radius, body->position.y - radius),
-                   Vector(radius * 2, radius * 2));
-    }
-
-    void render(AbstractShapeRenderer *renderer) {
-        renderer->render(this);
+     Box get_bounding_box() const {
+        return Box(Vector(body->position.x - radius_x, body->position.y - radius_y),
+                   Vector(radius_x * 2, radius_y * 2));
     }
 };
 

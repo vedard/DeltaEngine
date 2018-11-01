@@ -28,4 +28,4 @@ $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRC) $(SRCDIR)/*.$(HEADER)
 clean:
 	$(RM) -r $(BUILDDIR)/* $(TARGET)
 
-.PHONY: clean
+.PHONY: clean run

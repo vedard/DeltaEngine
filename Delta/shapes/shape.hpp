@@ -3,7 +3,6 @@
 #include <vector>
 #include "../math/box.hpp"
 #include "../math/vector.hpp"
-#include "abstract_shape_renderer.hpp"
 
 namespace dt {
 
@@ -15,12 +14,12 @@ class Shape {
     VectorList points;
 
     Shape();
+    Shape(std::initializer_list<Vector> points);
     virtual float get_area() const;
     virtual Box get_bounding_box() const;
     virtual Vector get_centroid() const;
     virtual VectorList get_edges() const;
     virtual VectorList get_vertices() const;
-    virtual void render(AbstractShapeRenderer *renderer);
 };
 
 }  // namespace dt
