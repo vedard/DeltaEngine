@@ -9,12 +9,11 @@ Window::Window() {
     this->setFramerateLimit(60);
     font.loadFromFile("./res/Ubuntu-R.ttf");
 
-    // this->test_big_ball();
-this->test_cage();
-    // this->test_pool();
-}
+    auto test = this->getDefaultView();
+    test.zoom(1.f / 85.f);
+    test.setCenter(8.f,4.5f);
+    this->setView(test);
 
-void Window::test_cage() {
     this->world.bodies.push_back(new dt::Body(dt::Vector(16.f / 2.f, 0.05f / 2.f),
                                                  new dt::Rectangle(dt::Vector(16, 0.05f)), false, true, false));
     this->world.bodies.push_back(new dt::Body(dt::Vector(16.f / 2.f, 9.f - 0.05f / 2.f),
@@ -36,73 +35,7 @@ void Window::test_cage() {
     this->world.bodies.push_back(
         new dt::Body(dt::Vector(8, 4), new dt::Rectangle(dt::Vector(1.f,1.f)), false, false, true));
 
-    this->world.bodies.back()->linear_damping = 4.f;
-
-    // std::mt19937 generator(std::random_device{}());
-    // std::normal_distribution<float> speed_dis(0, 400);
-    // std::normal_distribution<> position_x(600, 10);
-    // std::normal_distribution<> position_y(375, 10);
-    // std::normal_distribution<> radius(80.f, 10.f);
-    // for (int i = 0; i < 20; i++) {
-    //     dt::Shape* shape = nullptr;
-
-    //         shape = new dt::Rectangle(dt::Vector(radius(generator), radius(generator)));
-
-    //     dt::Body* body =
-    //         new dt::Body(dt::Vector(position_x(generator), position_y(generator)), shape, false, false);
-    //     body->velocity = dt::Vector(speed_dis(generator), speed_dis(generator));
-    //     this->world.bodies.push_back(body);
-    // }
-    // for(auto&& body : this->world.bodies)
-    // {
-    //    body->coefficient_restitution =1.f; 
-    // }
-}
-
-void Window::test_big_ball() {
-    std::mt19937 generator(std::random_device{}());
-    std::uniform_int_distribution<> position_x(500.f, 800.f);
-    std::uniform_int_distribution<> position_y(-1500, 10);
-    std::normal_distribution<> radius(35.f, 4.f);
-
-    // for (size_t i = 0; i < 25; i++) {
-    //     this->world.bodies.push_back(new dt::Body(dt::Vector(position_x(generator),
-    //     position_y(generator)),
-    //                                                 new
-    //                                                 dt::Rectangle(dt::Vector(radius(generator),
-    //                                                 radius(generator))), true, false));
-    // }
-    this->world.bodies.push_back(new dt::Body( dt::Vector(8.f, 7.5f), new dt::Rectangle(dt::Vector(14.f, 0.5f)), false, true, false));
-    this->world.bodies.push_back(new dt::Body( dt::Vector(15.f, 1.f), new dt::Rectangle(dt::Vector(0.5f, 0.5f)), true, false, false));
-
-    this->world.bodies.back()->velocity = dt::Vector(-1.f, 0);
-    this->world.bodies.back()->angular_velocity = 1.f;
-
-}
-
-void Window::test_pool() {
-    this->world.bodies.push_back(new dt::Body(dt::Vector(700, 50), new dt::Rectangle(dt::Vector(1000, 10.f)), false, true, false));
-    this->world.bodies.push_back(new dt::Body(dt::Vector(440, 10), new dt::Rectangle(dt::Vector(10, 1000.f)), false, true, false));
-    this->world.bodies.push_back(new dt::Body(dt::Vector(750, 10), new dt::Rectangle(dt::Vector(10, 1000.f)), false, true, false));
-    for (int i = 0; i < 5; i++) {
-      for (int j = 0 + i; j < 5; j++) {
-        dt::Body *c = new dt::Body(
-            dt::Vector(500.f + j * 41.f - 20.f * i, 100.f + i * 41.f),
-            new dt::Circle(20.f), false, false, false);
-        this->world.bodies.push_back(c);
-      }
-    }
-
-    dt::Body *b = new dt::Body(dt::Vector(580.f, 900.f), new dt::Circle(20.f), false, false, false);
-    b->velocity = dt::Vector(0.f, -1900.f);
-
-    
-    for(auto&& body : this->world.bodies)
-    {
-       body->coefficient_restitution =1.f; 
-    }
-    
-    this->world.bodies.push_back(b);
+        this->world.bodies.back()->linear_damping = 4.f;
 }
 
 void Window::run() {
@@ -196,43 +129,30 @@ void Window::process_input() {
 void Window::render() {
     clear(sf::Color(20, 20, 20));
 
-    sf::Text text;
-    text.setFont(font);
-    text.setCharacterSize(12);
-    text.setFillColor(sf::Color::White);
-    std::stringstream ss;
-
-    ss << this->framerate << std::endl
-       << this->world.bodies.back()->forces << std::endl
-       << this->world.bodies.back()->velocity.lenght_squared() << std::endl
-       << this->world.bodies.back()->position;
-    text.setString(ss.str());
-
     for (auto&& body : world.bodies) {
         body->shape->render(this);
     }
 
     sf::CircleShape image;
-    image.setRadius(2);
+    image.setRadius(0.02f);
     image.setFillColor(sf::Color::Magenta);
     for (auto&& collision : world.collisions) {
         for (auto&& contact : collision.contacts) {
-            image.setPosition(sf::Vector2f(contact.x*85.f - 2 , contact.y*85.f - 2));
+            image.setPosition(sf::Vector2f(contact.x - 0.02f , contact.y - 0.02f));
             draw(image);
         }
     }
 
-    draw(text);
     display();
 }
 
 void Window::render(dt::Circle* shape) {
     sf::CircleShape image;
-    image.setRadius(shape->radius*85.f);
-    image.setPosition(sf::Vector2f((shape->body->position.x - shape->radius) *85.f, (shape->body->position.y - shape->radius)*85.f));
+    image.setRadius(shape->radius);
+    image.setPosition(sf::Vector2f((shape->body->position.x - shape->radius), (shape->body->position.y - shape->radius)));
     image.setFillColor(sf::Color::Transparent);
     image.setOutlineColor(sf::Color::Cyan);
-    image.setOutlineThickness(1);
+    image.setOutlineThickness(1.f/ 85.f);
 
     draw(image);
 }
@@ -244,11 +164,11 @@ void Window::render(dt::Shape* shape) {
      for (auto&& vertex : shape->get_vertices()) {
         std::size_t current_size = image.getPointCount();
         image.setPointCount(current_size + 1);
-        image.setPoint(current_size, sf::Vector2f(vertex.x *85.f, vertex.y*85.f));
+        image.setPoint(current_size, sf::Vector2f(vertex.x, vertex.y));
     }
 
     image.setFillColor(sf::Color::Transparent);
     image.setOutlineColor(sf::Color::Green);
-    image.setOutlineThickness(1);
+    image.setOutlineThickness(1.f/ 85.f);
     draw(image);
 }
