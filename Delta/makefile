@@ -1,4 +1,4 @@
-EXECUTABLE:= libdelta.a
+EXECUTABLE:= libdelta.so
 CXX := g++
 SRCDIR := .
 BUILDDIR := ../build/Delta
@@ -11,13 +11,13 @@ HEADER := hpp
 SOURCES := $(shell find $(SRCDIR) -type f -name '*.$(SRC)')
 HEADERS := $(shell find $(SRCDIR) -type f -path '*.$(HEADER)')
 OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRC)=.o))
-CXXFLAGS := -Wfatal-errors -Wall -g -std=c++17
-LIB := 
+CXXFLAGS := -Wfatal-errors -Wall -O2 -std=c++17 -fPIC
+LDFLAGS := -shared
 
 
 $(TARGET): $(OBJECTS)
 	@mkdir -p "$(BINDIR)"
-	$(AR) -rcs "$@" $(OBJECTS)
+	$(CXX) -o $@ $(OBJECTS) $(LDFLAGS) 
 
 $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRC) $(SRCDIR)/*.$(HEADER)
 	@mkdir -p "$(@D)"

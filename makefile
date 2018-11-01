@@ -9,8 +9,7 @@ DeltaPlayground:
 	@$(MAKE) --no-print-directory -C DeltaPlayground
 
 clean:
-	@$(MAKE) --no-print-directory -C Delta clean
-	@$(MAKE) --no-print-directory -C DeltaPlayground clean
+	@rm -rf bin build
 
 install:
 	@$(MAKE) --no-print-directory -C Delta install
