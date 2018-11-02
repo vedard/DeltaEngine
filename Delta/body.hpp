@@ -43,11 +43,11 @@ class Body {
     // Use to speed up calculation
     float inverse_inertia = 1.f;
 
-    // The quantity of mass for a area or shape
-    float density = 1.f;
+    // The quantity of mass for a area or shape (kilograms/meters^2)
+    float density = 0.65f;
 
     // Ranges from 0 to 1, where 1 would be a perfectly elastic collision
-    float coefficient_restitution = 0.2f;
+    float coefficient_restitution = 0.5f;
 
     // The ratio of the force of friction when they are not moving
     float coefficient_static_friction = 0.4f;

@@ -110,7 +110,7 @@ void Window::process_input() {
         for (auto&& other : world.bodies) {
             dt::Collision c(other, world.bodies.back());
             if (c.Detect() && c.normal.y < 0) {
-                float angle = atan2f(c.normal.y, c.normal.x);
+                float angle = c.normal.angle();
                 if (angle > -3.f && angle < -0.1415) {
                     world.bodies.back()->forces += dt::Vector(0, -300);
                     other->forces -= dt::Vector(0, -300);

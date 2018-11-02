@@ -29,6 +29,10 @@ float Vector::dot(const Vector& v) const {
     return x * v.x + y * v.y;
 }
 
+float Vector::angle() const {
+    return atan2f(y, x);
+}
+
 float Vector::cross(const Vector& v) const {
     return x * v.y - y * v.x;
 }

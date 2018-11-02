@@ -190,8 +190,8 @@ void Collision::SolveVelocity() {
 
 void Collision::SolvePosition() {
     const float linear_slope = 0.0005f;
-    const float max_correction = 0.4f;
-    const float correction_percent = 0.8f;
+    const float max_correction = 1.f;
+    const float correction_percent = 0.7f;
 
     float correction = std::clamp((penetration - linear_slope) * correction_percent, 0.0f, max_correction) /
                        (A->inverse_mass + B->inverse_mass);
