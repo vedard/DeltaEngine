@@ -5,6 +5,9 @@ namespace dt {
 Vector::Vector(float x, float y) : x(x), y(y) {
 }
 
+Vector::Vector(const Vector& vector): x(vector.x), y(vector.y){
+}
+
 float Vector::lenght() const {
     return sqrtf(x * x + y * y);
 }

@@ -12,11 +12,11 @@ class Edge {
     Vector point_2;
     Vector edge;
 
-    Edge(Vector max, Vector p1, Vector p2) : max(max), point_1(p1), point_2(p2) {
+    Edge(const Vector& max, const Vector& p1, const Vector& p2) : max(max), point_1(p1), point_2(p2) {
         this->edge = point_2 - point_1;
     }
 
-    static Edge GetBestEdgeInvolve(VectorList vertices, Vector n) {
+    static Edge GetBestEdgeInvolve(const VectorList& vertices, const Vector& n) {
         Vector current_vertex, previous_vertex, next_vertex;
 
         // Find the farthest vertex in the collision
@@ -43,7 +43,7 @@ class Edge {
         }
     }
 
-    static VectorList GetClippedPoints(Vector v1, Vector v2, Vector normal, float o) {
+    static VectorList GetClippedPoints(const Vector& v1, const Vector& v2, const Vector& normal, float o) {
         VectorList clipped_points;
 
         float d1 = normal.dot(v1) - o;

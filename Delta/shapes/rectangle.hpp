@@ -8,7 +8,7 @@ class Rectangle : public Shape {
    public:
     Vector size;
 
-    Rectangle(Vector size) : size(size) {
+    Rectangle(const Vector& size) : size(size) {
         this->points.push_back(Vector(-(size.x / 2.f), -(size.y / 2.f)));
         this->points.push_back(Vector((size.x / 2.f), -(size.y / 2.f)));
         this->points.push_back(Vector((size.x / 2.f), (size.y / 2.f)));

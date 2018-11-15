@@ -13,7 +13,7 @@ class Projection {
     Vector closest_vertex;
 
     Projection(float start, float end);
-    Projection(Vector axis, VectorList vertices);
+    Projection(const Vector& axis, const VectorList& vertices);
     bool is_overlapping_with(const Projection& other) const;
     float calculate_overlap_with(const Projection& other) const;
 };

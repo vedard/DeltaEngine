@@ -2,7 +2,7 @@
 
 namespace dt {
 
-Box::Box(Vector position, Vector size) : position(position), size(size) {
+Box::Box(const Vector& position, const Vector& size) : position(position), size(size) {
 }
 
 bool Box::is_colliding_with(const Box& other) const {

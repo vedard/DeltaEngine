@@ -12,6 +12,7 @@ class Vector {
     float y;
 
     Vector(float x = 0.f, float y = 0.f);
+    Vector(const Vector& vector);
 
     // Total length of the vector
     float lenght() const;

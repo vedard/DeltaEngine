@@ -67,7 +67,7 @@ class Body {
     Shape* shape;
 
     Body(Shape* shape);
-    Body(Vector position, Shape* shape, bool is_gravity_affected = true, bool is_static = false, bool fixed_rotation = false);
+    Body(const Vector& position, Shape* shape, bool is_gravity_affected = true, bool is_static = false, bool fixed_rotation = false);
 
     // Compute the mass and inertia from the size of shape and the density
     void compute_mass();

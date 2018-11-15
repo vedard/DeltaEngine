@@ -5,7 +5,7 @@ namespace dt {
 Projection::Projection(float start, float end) : start(start), end(end) {
 }
 
-Projection::Projection(Vector axis, VectorList vertices) {
+Projection::Projection(const Vector& axis, const VectorList& vertices) {
     start = INFINITY;
     end = -INFINITY;
     for (auto&& vertex : vertices) {
