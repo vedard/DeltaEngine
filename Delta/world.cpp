@@ -27,7 +27,8 @@ void World::step() {
                 body->angular_velocity += body->torque * body->inverse_mass * delta_time;
             }
 
-            body->velocity *= 1.0f / (1.0f + delta_time * body->linear_damping);
+            body->velocity.x *= 1.0f / (1.0f + delta_time * body->linear_damping.x);
+            body->velocity.y *= 1.0f / (1.0f + delta_time * body->linear_damping.y);
             body->angular_velocity *= 1.0f / (1.0f + delta_time * body->angular_damping);
         }
     }

@@ -17,7 +17,7 @@ class Body {
     Vector forces;
 
     // The linear damping to reduce the velocity (1/seconds)
-    float linear_damping = 0.f;
+    Vector linear_damping = dt::Vector(0.f, 0.f);
 
     // The rotation (radian)
     float angle = 0.f;
