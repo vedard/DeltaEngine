@@ -16,7 +16,7 @@ bool Collision::BroadDetection() {
     // They might be colliding, but they won't move anyway
     if (A->is_static && B->is_static) return false;
 
-    // They moght be colliding, but it won't change anything
+    // They might be colliding, but it won't change anything
     if (A->mass == INFINITY && B->mass == INFINITY)
         return false;
 
@@ -136,6 +136,7 @@ bool Collision::CircleCircleDetection(Circle* shape_a, Circle* shape_b) {
 }
 
 void Collision::SolveVelocity() {
+    Vector base_velocity_difference = B->velocity - A->velocity;
     for (auto&& contact : contacts) {
         Vector ra = contact - A->position;
         Vector rb = contact - B->position;
@@ -145,7 +146,7 @@ void Collision::SolveVelocity() {
         float sum_inverse_mass = (A->inverse_mass + B->inverse_mass) + raCrossN * raCrossN * A->inverse_inertia + rbCrossN * rbCrossN * B->inverse_inertia;
 
         // impact speed
-        Vector velocity_difference = B->velocity - A->velocity + rb.cross(-B->angular_velocity) - ra.cross(-A->angular_velocity);
+        Vector velocity_difference = base_velocity_difference + rb.cross(-B->angular_velocity) - ra.cross(-A->angular_velocity);
         float dot = velocity_difference.dot(this->normal);
 
         // Already Moving away
@@ -164,8 +165,7 @@ void Collision::SolveVelocity() {
         B->angular_velocity += B->inverse_inertia * rb.cross(v_impulse);
 
         // Friction
-        // velocity_difference = B->velocity - A->velocity;
-        velocity_difference = B->velocity - A->velocity + rb.cross(-B->angular_velocity) - ra.cross(-A->angular_velocity);
+        velocity_difference = base_velocity_difference + rb.cross(-B->angular_velocity) - ra.cross(-A->angular_velocity);
 
         Vector tangent = (velocity_difference - (normal * velocity_difference.dot(normal))).normalize();
         float impulse_tangent = velocity_difference.dot(tangent) * -1.f / sum_inverse_mass / ((float)contacts.size());
